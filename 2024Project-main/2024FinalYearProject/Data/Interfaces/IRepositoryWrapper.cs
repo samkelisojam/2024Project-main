@@ -1,6 +1,6 @@
 ﻿namespace _2024FinalYearProject.Data.Interfaces
 {
-    public class IRepositoryWrapper
+    public interface IRepositoryWrapper
     {
         ITransactionRepository Transaction { get; }
         IReviewRepository Review { get; }

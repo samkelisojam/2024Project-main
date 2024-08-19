@@ -22,7 +22,11 @@ namespace _2024FinalYearProject.Data
         {
             return await _context.Set<T>().ToListAsync();
         }
-
+        public async Task<string> GetUsernameByIdAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            return user.UserName;
+        }
         public async Task<T> GetByIdAsync(int? id)
         {
             return await _context.Set<T>().FindAsync(id);
@@ -44,5 +48,6 @@ namespace _2024FinalYearProject.Data
             await _context.SaveChangesAsync();
 
         }
+
     }
 }
