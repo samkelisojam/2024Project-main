@@ -49,9 +49,5 @@ namespace _2024FinalYearProject.Data
 
         }
 
-        public async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync(); 
-        }
     }
 }

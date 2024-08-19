@@ -1,7 +1,4 @@
 ﻿
-
-
-
 using _2024FinalYearProject.Data;
 using _2024FinalYearProject.Data.Interfaces;
 using _2024FinalYearProject.Models;
@@ -31,25 +28,19 @@ namespace _2024FinalYearProject.Controllers
         // Get Notification
         public async Task<IActionResult> NotificationMessage()
         {
-            // Get the username of the currently logged-in user
             var username = User.Identity.Name;
 
-            // Find the user in the database using the username (await the async call)
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
-                // Handle the case where the user is not found, perhaps return an error or redirect
+
                 return NotFound();
             }
-
-            // Get all notifications (assumes _repo.Notification.GetAllAsync() is an async method)
             var allNotifications = await _repo.Notification.GetAllAsync();
 
-            // Filter notifications by the user's ID
             var userNotifications = allNotifications.Where(n => n.AppUserId == user.Id).ToList();
 
-            // Return the filtered list to the view
             return View(userNotifications);
         }
         [HttpGet]
@@ -58,7 +49,6 @@ namespace _2024FinalYearProject.Controllers
          
             var username = User.Identity.Name;
 
-          
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
@@ -66,38 +56,19 @@ namespace _2024FinalYearProject.Controllers
               
                 return NotFound();
             }
-
-          
             var allTransaction = await _repo.Notification.GetAllAsync();
 
-          
             var userTransaction = allTransaction.Where(n => n.AppUserId == user.Id).ToList();
 
             return View(userTransaction);
         }
-
-        // My Account (Commented Out)
-        // public IActionResult MyAccount()
-        // {
-        //     var transactions = _repo.Transaction.GetAll();
-        //     var bankBalance = _repo.BankBalance.GetAll();
-        //
-        //     var viewModel = new BankAccountViewModel
-        //     {
-        //         BankAccount = bankBalance,
-        //         Transactions = transactions
-        //     };
-        //     return View(viewModel);
-        // }
 
         [HttpGet]
         public async Task<IActionResult> CashSent()
         {
             var username = User.Identity.Name;
 
-
             var user = await _userManager.FindByNameAsync(username);
-
 
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
             var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
@@ -121,9 +92,7 @@ namespace _2024FinalYearProject.Controllers
         {
             var username = User.Identity.Name;
 
-
             var user = await _userManager.FindByNameAsync(username);
-
 
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
             var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
@@ -153,9 +122,7 @@ namespace _2024FinalYearProject.Controllers
 
             // Save the transaction
             await _repo.Transaction.AddAsync(transaction);
-           await _repo.Transaction.SaveAsync();
-
-            // Prepare and return the success view
+        
             return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
         }
 
@@ -192,10 +159,8 @@ namespace _2024FinalYearProject.Controllers
             if (ModelState.IsValid)
             {
                await  _repo.Review.AddAsync(feedback);
-                await _repo.Review.SaveAsync();
                 return  RedirectToAction("Index", "Client");
             }
-
             return View(feedback);
         }
     }
