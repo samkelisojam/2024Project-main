@@ -29,7 +29,7 @@ namespace _2024FinalYearProject.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Register(string registerAs = "studentstaff")
+        public IActionResult Register(string registerAs = "student")
         {
             return View(new RegisterViewModel() { RegisterAs = registerAs });
         }
@@ -45,35 +45,19 @@ namespace _2024FinalYearProject.Controllers
 
                 AppUser user = new()
                 {
-                    UserName = registerModel.LastName + (registerModel.IdPassportNumber ?? registerModel.StudentStaffNumber),
-                    IdPassportNumber = registerModel.IdPassportNumber,
+                    UserName = registerModel.LastName + registerModel.FirstName,
+                    IDnumber = registerModel.IdPassportNumber,
                     Email = registerModel.EmailAddress,
                     FirstName = registerModel.FirstName,
                     LastName = registerModel.LastName,
-                    DateJoined = DateTime.Now,
                     StudentStaffNumber = registerModel.StudentStaffNumber,
-                    MobilePassword = registerModel.Password
+                    UserRole = registerModel.RegisterAs
                 };
-                wrapper.NotificationRepository.Add(new()
-                {
-                    Message = $"Hello {user.FirstName}, Welcome to UFS QQ facilities.",
-                    UserEmail = user.Email
-                });
-
-                wrapper.RecoveryRepository.Add(new()
-                {
-                    SecurityQuestion = registerModel.SecurityQuestion,
-                    SecurityAnswer = registerModel.SecurityAnswer,
-                    UserEmail = user.Email
-                });
 
                 IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, role);
-                    wrapper.Save();
-
-
                     var signin_result = await signInManager.PasswordSignInAsync(user, registerModel.Password,
                         isPersistent: false, lockoutOnFailure: false);
                     if (signin_result.Succeeded)
@@ -81,7 +65,7 @@ namespace _2024FinalYearProject.Controllers
                 }
                 else
                     foreach (var error in result.Errors.Select(e => e.Description))
-                        ModelState.AddModelError(string.Empty, error);
+                        ModelState.AddModelError("", error);
             }
             return View(registerModel);
         }
@@ -105,86 +89,19 @@ namespace _2024FinalYearProject.Controllers
                 AppUser user = await userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
-                    if (user.PasswordHash == null)
-                    {
-
-                        await userManager.UpdateSecurityStampAsync(user);
-                        if ((await userManager.AddPasswordAsync(user, user.MobilePassword)).Succeeded)
-                        {
-                            user.NormalizedEmail = user.Email.ToUpper();
-                            user.NormalizedUserName = user.UserName.ToUpper();
-                            await userManager.UpdateAsync(user);
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Couldn't sync mobile registered user with application.");
-                            return View(model);
-                        }
-                    }
                     var result = await signInManager.PasswordSignInAsync
                         (user, model.Password, isPersistent: model.RememberMe, false);
                     if (result.Succeeded)
                     {
                         return Redirect(model?.ReturnUrl ?? "/Home/Index");
                     }
-
                 }
             }
             ModelState.AddModelError("", "Invalid email or password");
             return View(model);
         }
 
-
-        [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Edit(string id)
-        {
-            AppUser user = await userManager.FindByIdAsync(id);
-            ViewBag.isManager = (await userManager.GetUsersInRoleAsync("Manager")).Any(u => u.Id == user.Id);
-            return View(new EditViewModel()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                IdPassportNumber = user.IdPassportNumber,
-                StudentStaffNumber = user.StudentStaffNumber,
-                Username = user.UserName
-            });
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Edit(EditViewModel model)
-        {
-            AppUser user = await userManager.FindByIdAsync(model.Id);
-            if (user != null && ModelState.IsValid)
-            {
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.StudentStaffNumber = model.StudentStaffNumber;
-                user.IdPassportNumber = model.IdPassportNumber;
-                user.DateModified = DateTime.Now;
-
-                if (model.Password != null)
-                {
-                    if ((await userManager.RemovePasswordAsync(user)).Succeeded)
-                        if ((await userManager.AddPasswordAsync(user, model.Password)).Succeeded)
-                            if ((await userManager.UpdateAsync(user)).Succeeded)
-                                if (AppUser.IsInRole("Administrator"))
-                                    return RedirectToAction("Users");
-                                else return RedirectToAction("Index", "Home");
-                }
-
-                if ((await userManager.UpdateAsync(user)).Succeeded)
-                    if (AppUser.IsInRole("Administrator"))
-                        return RedirectToAction("Users", "Admin");
-                    else return RedirectToAction("Index", "Home");
-            }
-            return View(model);
-        }
-
-        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
@@ -195,7 +112,5 @@ namespace _2024FinalYearProject.Controllers
         {
             return View();
         }
-
     }
-}
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace _2024FinalYearProject.Migrations
 {
     /// <inheritdoc />
-    public partial class testing : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,10 +32,12 @@ namespace _2024FinalYearProject.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IDnumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentStaffNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IDnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -62,10 +64,10 @@ namespace _2024FinalYearProject.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     dateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rate = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AppUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,11 +186,11 @@ namespace _2024FinalYearProject.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BankAccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankAccountType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccountOrder = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,8 +199,7 @@ namespace _2024FinalYearProject.Migrations
                         name: "FK_BankAccounts_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -207,10 +208,10 @@ namespace _2024FinalYearProject.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NotificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -219,8 +220,7 @@ namespace _2024FinalYearProject.Migrations
                         name: "FK_Notifications_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -233,8 +233,8 @@ namespace _2024FinalYearProject.Migrations
                     BankAccountIdReceiver = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Reference = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Reference = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BankAccountId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -244,8 +244,7 @@ namespace _2024FinalYearProject.Migrations
                         name: "FK_Transactions_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Transactions_BankAccounts_BankAccountId",
                         column: x => x.BankAccountId,
@@ -258,8 +257,11 @@ namespace _2024FinalYearProject.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2ca61e3c-7d6e-45c5-aea9-09dde9d81ae0", null, "Admin", "ADMIN" },
-                    { "c127a51a-b7c4-4a8d-9a45-aa0c3b4909ec", null, "User", "USER" }
+                    { "4fe9c6d4-b25c-4d5c-9a15-7edb3cee631a", null, "Student", "STUDENT" },
+                    { "66c45ef7-7060-4327-a96d-a789829ad97a", null, "Consultant", "CONSULTANT" },
+                    { "854fa539-c08f-4edb-a63b-3d6680857ce0", null, "Admin", "ADMIN" },
+                    { "c2cc7ad2-7b45-4349-955e-cf078161ec49", null, "User", "USER" },
+                    { "e0670559-1ef0-48db-a7fe-bae0926769c9", null, "Staff", "STAFF" }
                 });
 
             migrationBuilder.CreateIndex(

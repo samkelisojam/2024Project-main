@@ -19,7 +19,7 @@ namespace _2024FinalYearProject.Data.SeedData
                     Name = "User",
                     NormalizedName = "USER"
                 }
-                ,new IdentityRole
+                , new IdentityRole
                 {
                     Name = "Consultant",
                     NormalizedName = "CONSULTANT"

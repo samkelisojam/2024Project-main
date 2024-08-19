@@ -5,18 +5,12 @@
 
 
 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="card shadow-sm">
+    <div class="card ">
         <div>
-            <div id="register-panel" class="card-header">
-                <div class="text-center">
-                    <img class="img-fluid p-3"
-                        style="width:10rem;filter: drop-shadow(0px 0px 1px rgba(254, 254, 254, 0.8));"
-                        src="/images/ufs_logo.png" />
-                </div>
-                <h2 class="display-6 text-light text-center ps-2 pe-2">Welcome back, login to your account</h2>
+            <div class="p-4">
+                <h2 class="display-6 text-dark text-center ps-2 pe-2">Welcome back, login to your account</h2>
             </div>
-
-            <div class="text-danger mt-3" asp-validation-summary="All"></div>
+            <div class="text-danger mt-1" asp-validation-summary="All"></div>
 
             <div class="p-4 pb-5">
                 <form asp-action="Login" asp-controller="Account" method="post">
@@ -46,8 +40,7 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-dark btn-sm shadow-sm">
-                            <span class="fa fa-key"></span>
+                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">
                             Login to your account
                         </button>
                         <br /><br />

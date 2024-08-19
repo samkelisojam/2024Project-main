@@ -18,6 +18,15 @@ opts.UseSqlServer(connString, opts =>
     opts.UseCompatibilityLevel(110);
 }));
 
+builder.Services.AddIdentity<AppUser, IdentityRole>(opts =>
+{
+    opts.Password.RequiredLength = 8;
+    opts.Password.RequireUppercase = true;
+    opts.Password.RequireLowercase = true;
+    opts.Password.RequireNonAlphanumeric = true;
+    opts.Password.RequireDigit = true;
+    opts.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddIdentityCore<AppUser>().AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
