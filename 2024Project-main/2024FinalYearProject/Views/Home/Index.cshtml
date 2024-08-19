@@ -1,8 +1,57 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Page Background Color -->
+<style>
+    body {
+        background-color: #f4f7fc; /* Light, soft background color */
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section text-white text-center d-flex justify-content-center align-items-center"
+     style="background-image: url('@Url.Content("~/images/bg.jpg")'); height: 60vh; background-size: cover; background-position: center;">
+    <div class="hero-content">
+        <h1 class="display-4">Welcome to Your Secure Banking Solution</h1>
+        <p class="lead">Manage your finances effortlessly with our cutting-edge online banking platform.</p>
+    </div>
 </div>
+
+<!-- Key Functionalities Section -->
+<div class="container py-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Apply for an Account</h5>
+                    <p class="card-text">Open an account in minutes with our simple, secure process.</p>
+                    <a href="@Url.Action("Apply", "Account")" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Make Payments</h5>
+                    <p class="card-text">Pay bills, transfer funds, and manage your payments easily.</p>
+                    <a href="@Url.Action("MakePayment", "Payment")" class="btn btn-primary">Make a Payment</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <i class="fas fa-exchange-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Peer-to-Peer Transfer</h5>
+                    <p class="card-text">Send money instantly to friends and family with just a few clicks.</p>
+                    <a href="@Url.Action("Transfer", "Transfer")" class="btn btn-primary">Transfer Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
