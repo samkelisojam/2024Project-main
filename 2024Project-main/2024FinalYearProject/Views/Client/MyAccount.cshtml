@@ -1,0 +1,96 @@
+﻿@model BankAccountViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+  
+    <style>
+        .account-balance-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            text-align: center;
+        }
+        .account-balance {
+            font-size: 2.5em;
+            color: #28a745;
+        }
+        .transaction-list-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        .transaction-item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-item .date {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .transaction-item .amount {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <!-- Bank Account Balance Section -->
+        <div class="col-md-8">
+              @foreach (var Account in Model.BankAccount)
+                {
+                <div class="account-balance-card">
+                    <h2>@Account.BankAccountType</h2>
+                        <p><strong>Account Number:</strong> @Account.AccountNumber</p>
+                        <p><strong>Balance:</strong> <span class="account-balance">R @Account.Balance</span></p>
+                </div>
+                }
+          
+        </div>
+
+        <!-- Transactions Section -->
+        <div class="col-md-8">
+            <div class="transaction-list-card">
+                <h4>Recent Transactions</h4>
+                @if (Model.Transactions != null && Model.Transactions.Any())
+                {
+                    foreach (var transaction in Model.Transactions)
+                    {
+                        <div class="transaction-item">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <span>@transaction.Reference</span>
+                                    <br />
+                                    <span class="date">@transaction.TransactionDate.ToString("MM/dd/yyyy")</span>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <span class="amount">$@transaction.Amount</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No transactions available.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
