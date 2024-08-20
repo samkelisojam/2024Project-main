@@ -8,5 +8,6 @@
         IBankAccountRepository BankAccount { get; }
 
         INotificationRepository Notification { get; }
+        void SaveChanges();
     }
 }

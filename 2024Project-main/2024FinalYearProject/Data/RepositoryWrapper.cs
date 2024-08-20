@@ -79,5 +79,9 @@ namespace _2024FinalYearProject.Data
                 return _Review;
             }
         }
+        public void SaveChanges()
+        {
+            _appDbContext.SaveChanges();
+        }
     }
 }
