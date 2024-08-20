@@ -1,4 +1,4 @@
-﻿namespace _2024FinalYearProject.Models
+﻿namespace _2024FinalYearProject.Models.ViewModels
 {
     public class BankAccountViewModel
     {
@@ -11,7 +11,12 @@
         public decimal Amount { get; set; }
         public decimal AvailableBalance { get; set; }  // Add this property
     }
-
+    public class BankAccountViewModela
+    {
+        public string AccountNumber { get; set; }
+        public decimal Balance { get; set; }
+        public string BankAccountType { get; set; }
+    }
 
 
 }
