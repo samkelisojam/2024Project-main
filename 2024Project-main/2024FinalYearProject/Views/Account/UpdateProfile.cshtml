@@ -1,0 +1,33 @@
+﻿@model UpdateProfileViewModel
+
+<div class="container d-flex justify-content-center">
+    <div class="col-md-6">
+        <h2>Update Profile</h2>
+        <hr />
+        <form asp-action="UpdateProfile" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email <i class="fas fa-envelope"></i></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label">Phone Number <i class="fas fa-phone"></i></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IDNumber" class="control-label">ID Number <i class="fas fa-id-card"></i></label>
+                <input asp-for="IDNumber" class="form-control" readonly />
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Userrole" class="control-label">User Role <i class="fas fa-user-tag"></i></label>
+                <input asp-for="Userrole" class="form-control" readonly />
+            </div>
+            <div class="form-group d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

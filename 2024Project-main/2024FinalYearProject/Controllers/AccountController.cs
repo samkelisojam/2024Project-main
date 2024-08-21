@@ -70,6 +70,50 @@ namespace _2024FinalYearProject.Controllers
             return View(registerModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateProfile()
+        {
+            var username = User.Identity.Name;
+
+            var user = await userManager.FindByNameAsync(username);
+            var model = new UpdateProfileViewModel
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+              
+                IDNumber = user.IDnumber,
+
+                Userrole=user.UserRole
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(UpdateProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var username = User.Identity.Name;
+
+                var user = await userManager.FindByNameAsync(username);
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View(model);
+        }
+
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
