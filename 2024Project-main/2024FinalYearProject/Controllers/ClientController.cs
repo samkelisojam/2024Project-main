@@ -2,10 +2,13 @@
 using _2024FinalYearProject.Data;
 using _2024FinalYearProject.Data.Interfaces;
 using _2024FinalYearProject.Models;
+
+using _2024FinalYearProject.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace _2024FinalYearProject.Controllers
 {
@@ -46,14 +49,14 @@ namespace _2024FinalYearProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Transactions()
         {
-         
+
             var username = User.Identity.Name;
 
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
-              
+
                 return NotFound();
             }
             var allTransaction = await _repo.Notification.GetAllAsync();
@@ -122,7 +125,7 @@ namespace _2024FinalYearProject.Controllers
 
             // Save the transaction
             await _repo.Transaction.AddAsync(transaction);
-        
+
             return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
         }
 
@@ -148,7 +151,7 @@ namespace _2024FinalYearProject.Controllers
         }
 
         [HttpGet]
-        public  IActionResult AddRating()
+        public IActionResult AddRating()
         {
             return View();
         }
@@ -158,11 +161,30 @@ namespace _2024FinalYearProject.Controllers
         {
             if (ModelState.IsValid)
             {
-               await  _repo.Review.AddAsync(feedback);
-                return  RedirectToAction("Index", "Client");
+                await _repo.Review.AddAsync(feedback);
+                return RedirectToAction("Index", "Client");
             }
             return View(feedback);
         }
+
+
+        public async Task<IActionResult> ViewBankBalance()
+        {
+            var username = User.Identity.Name;
+
+            var user = await _userManager.FindByNameAsync(username);
+            var allBankAccount = await _repo.BankAccount.GetAllAsync();
+            var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            var viewModel = new BankAccountViewModela
+            {
+                AccountNumber = bankAccount.AccountNumber,
+                Balance = bankAccount.Balance,
+             
+            };
+
+            return View(viewModel);
+        }
+
     }
 
 }
