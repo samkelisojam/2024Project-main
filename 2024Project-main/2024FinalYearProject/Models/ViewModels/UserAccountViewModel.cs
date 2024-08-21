@@ -63,10 +63,9 @@ namespace _2024FinalYearProject.Models.ViewModels
     {
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-
         public DateOnly DateOfBirth { get; set; }
-    public string AccountNumber { get; set; }
+        public string AccountNumber { get; set; }
         public string IDNumber { get; set; }
-     public   string Userrole { get; set; }
+        public string Userrole { get; set; }
     }
 }
