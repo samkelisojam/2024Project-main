@@ -1,0 +1,38 @@
+﻿@model MoneyTransferViewModel
+
+<div class="container">
+    <h2>Transfer Money <i class="fas fa-exchange-alt"></i></h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="TransferMoneyview" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="SenderBankAccountId" class="control-label">Sender Account <i class="fas fa-user-circle"></i></label>
+                    <input asp-for="SenderBankAccountId" class="form-control" readonly />
+                    <span asp-validation-for="SenderBankAccountId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReceiverBankAccountId" class="control-label">Receiver Account <i class="fas fa-user-circle"></i></label>
+                    <select asp-for="ReceiverBankAccountId" class="form-control" asp-items="ViewBag.ReceiverBankAccounts"></select>
+                    <span asp-validation-for="ReceiverBankAccountId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label">Amount <i class="fas fa-money-bill-alt"></i></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Available Balance <i class="fas fa-wallet"></i></label>
+                    <input value="@Model.AvailableBalance" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Transfer <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to List</a>
+    </div>
