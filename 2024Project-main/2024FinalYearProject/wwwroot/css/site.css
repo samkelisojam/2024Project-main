@@ -119,37 +119,6 @@ small {
         color: #FFF;
     }
 
-.sidebar-logo {
-    margin: auto 0;
-}
-
-.sidebar-logo a {
-    color: #FFF;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: black;
-}
-
-#sidebar:not(.expand) .sidebar-logo,
-#sidebar:not(.expand) a.sidebar-link span {
-    display: none;
-}
-
-#sidebar.expand .sidebar-logo,
-#sidebar.expand a.sidebar-link span {
-    animation: fadeIn .25s ease;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
 .sidebar-nav {
     padding: 2rem 0;
     flex: 1 1 auto;
@@ -223,10 +192,7 @@ a.sidebar-link:hover {
     min-width: 200px;
 }
 
-.avatar {
-    height: 40px;
-    width: 40px;
-}
+
 
 
 
