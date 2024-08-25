@@ -12,7 +12,7 @@ using _2024FinalYearProject.Data;
 namespace _2024FinalYearProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240819212945_InitialMigration")]
+    [Migration("20240825141426_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -54,33 +54,21 @@ namespace _2024FinalYearProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "854fa539-c08f-4edb-a63b-3d6680857ce0",
+                            Id = "7484c7fc-da20-4088-93c9-1866b583ea69",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c2cc7ad2-7b45-4349-955e-cf078161ec49",
+                            Id = "f0a53c73-4ba0-4ceb-bb3e-682a8200c0ec",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "66c45ef7-7060-4327-a96d-a789829ad97a",
+                            Id = "8f3d5cd7-a615-4130-af7e-948756eb4d47",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
-                        },
-                        new
-                        {
-                            Id = "4fe9c6d4-b25c-4d5c-9a15-7edb3cee631a",
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = "e0670559-1ef0-48db-a7fe-bae0926769c9",
-                            Name = "Staff",
-                            NormalizedName = "STAFF"
                         });
                 });
 
@@ -198,12 +186,15 @@ namespace _2024FinalYearProject.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

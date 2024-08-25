@@ -1,5 +1,6 @@
 using _2024FinalYearProject.Data;
 using _2024FinalYearProject.Data.Interfaces;
+using _2024FinalYearProject.Data.SeedData;
 using _2024FinalYearProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//SeedIdentityData.EnsureIdentityPopulated(app);
+await SeedData.EnsurePopulatedAsync(app);
 
 app.Run();
