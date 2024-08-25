@@ -106,7 +106,7 @@ namespace _2024FinalYearProject.Controllers
                 return View(model);
             }
 
-            // Deduct the amount from the sender's account
+        
             bankAccount.Balance -= model.Amount;
 
             // Generate Cash Sent details
@@ -129,7 +129,7 @@ namespace _2024FinalYearProject.Controllers
             return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
         }
 
-        // Display Success View
+     
         public IActionResult CashSentSuccess(string cashDigit, string pinNumber, DateTime transactionDate)
         {
             ViewBag.CashDigit = cashDigit;
@@ -138,7 +138,7 @@ namespace _2024FinalYearProject.Controllers
             return View();
         }
 
-        // Utility method to generate random numbers as strings
+      
         private string GenerateRandomNumber(int length)
         {
             var random = new Random();
@@ -179,10 +179,128 @@ namespace _2024FinalYearProject.Controllers
             {
                 AccountNumber = bankAccount.AccountNumber,
                 Balance = bankAccount.Balance,
-             
+
             };
 
             return View(viewModel);
+        }
+
+
+
+        public async Task<bool> TransferMoney(int senderBankAccountId, int receiverBankAccountId, decimal amount)
+        {
+
+            var senderBankAccount = await _repo.BankAccount.GetByIdAsync(senderBankAccountId);
+            var receiverBankAccount = await _repo.BankAccount.GetByIdAsync(receiverBankAccountId);
+
+            if (senderBankAccount.Balance < amount)
+            {
+                return false;
+            }
+
+            senderBankAccount.Balance -= amount;
+            await _repo.BankAccount.UpdateAsync(senderBankAccount);
+
+            receiverBankAccount.Balance += amount;
+            await _repo.BankAccount.UpdateAsync(receiverBankAccount);
+
+
+            var senderTransaction = new Transaction
+            {
+                BankAccountIdSender = senderBankAccountId,
+                BankAccountIdReceiver = receiverBankAccountId,
+                Amount = -amount,
+                TransactionDate = DateTime.UtcNow,
+                AppUserId = senderBankAccount.AppUserId
+            };
+
+            //  new transaction record for the receiver
+            var receiverTransaction = new Transaction
+            {
+                BankAccountIdSender = senderBankAccountId,
+                BankAccountIdReceiver = receiverBankAccountId,
+                Amount = amount,
+                TransactionDate = DateTime.UtcNow,
+                AppUserId = receiverBankAccount.AppUserId 
+            };
+
+
+            await _repo.Transaction.AddAsync(senderTransaction);
+            await _repo.Transaction.AddAsync(receiverTransaction);
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TransferMoneyview()
+        {
+           
+
+            var username = User.Identity.Name;
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            var allBankAccount = await _repo.BankAccount.GetAllAsync();
+            var mainBankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            //
+        
+            
+
+            var viewModel = new MoneyTransferViewModel
+            {
+                SenderBankAccountId = mainBankAccount.Id,
+             
+           AvailableBalance = mainBankAccount.Balance,
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TransferMoneyview(MoneyTransferViewModel model)
+        {
+            var username = User.Identity.Name;
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            var allBankAccount = await _repo.BankAccount.GetAllAsync();
+            var mainBankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+
+
+            int senderBankAccountId = mainBankAccount.Id; 
+            int receiverBankAccountId = model.ReceiverBankAccountId;
+            decimal amount = model.Amount;
+
+
+
+         
+
+      
+            var currentUserId = user.Id;
+
+            // Check if the sender's bank account belongs to the current user
+            var senderBankAccount = await _repo.BankAccount.GetByIdAsync(senderBankAccountId);
+            if (senderBankAccount == null || senderBankAccount.AppUserId != currentUserId)
+            {
+                return BadRequest("Invalid sender bank account.");
+            }
+
+      
+            var receiverBankAccount = await _repo.BankAccount.GetByIdAsync(receiverBankAccountId);
+            if (receiverBankAccount == null)
+            {
+                return BadRequest("Invalid receiver bank account.");
+            }
+
+           
+            bool done = await TransferMoney(senderBankAccountId, receiverBankAccountId, amount);
+            if (done)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
     }
