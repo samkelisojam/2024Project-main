@@ -58,7 +58,7 @@ app.MapControllerRoute(
 // least specific route - 0 required segments 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Admin}/{action=Index}/{id?}");
 
 await SeedData.EnsurePopulatedAsync(app);
 
