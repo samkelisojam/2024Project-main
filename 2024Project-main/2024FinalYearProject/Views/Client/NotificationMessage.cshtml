@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Notification>
+
+<style>
+    .list-group-item-info {
+        background-color: #d1ecf1;
+    }
+
+    .list-group-item-light {
+        background-color: #f8f9fa;
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <h2>Your Notifications <i class="fas fa-bell"></i></h2>
+    <hr />
+    <div class="list-group">
+        @foreach (var notification in Model)
+        {
+            var notificationClass = notification.IsRead ? "list-group-item list-group-item-light" : "list-group-item list-group-item-info";
+            <div class="@notificationClass">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">@notification.Message</h5>
+                        <small>@notification.NotificationDate.ToString("f")</small>
+                    </div>
+                    <div>
+                        @if (!notification.IsRead)
+                        {
+                            <span class="badge badge-primary">New</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

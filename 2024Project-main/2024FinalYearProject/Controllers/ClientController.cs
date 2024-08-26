@@ -23,29 +23,54 @@ namespace _2024FinalYearProject.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+
+
+            var username = User.Identity.Name;
+
+            var user = await _userManager.FindByNameAsync(username);
+            var model = new UpdateProfileViewModel
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+
+                IDNumber = user.IDnumber,
+
+                Userrole = user.UserRole,
+                Lastname = user.LastName + " " + user.FirstName,
+
+            };
+            return View(model);
+           
         }
 
         // Get Notification
         public async Task<IActionResult> NotificationMessage()
         {
             var username = User.Identity.Name;
-
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
-
                 return NotFound();
             }
-            var allNotifications = await _repo.Notification.GetAllAsync();
 
+            var allNotifications = await _repo.Notification.GetAllAsync();
             var userNotifications = allNotifications.Where(n => n.AppUserId == user.Id).ToList();
+
+            foreach (var notification in userNotifications)
+            {
+                if (!notification.IsRead)
+                {
+                    notification.IsRead = true;
+                    await _repo.Notification.UpdateAsync(notification);
+                }
+            }
 
             return View(userNotifications);
         }
+
         [HttpGet]
         public async Task<IActionResult> Transactions()
         {
@@ -59,7 +84,7 @@ namespace _2024FinalYearProject.Controllers
 
                 return NotFound();
             }
-            var allTransaction = await _repo.Notification.GetAllAsync();
+            var allTransaction = await _repo.Transaction.GetAllAsync();
 
             var userTransaction = allTransaction.Where(n => n.AppUserId == user.Id).ToList();
 
@@ -91,10 +116,10 @@ namespace _2024FinalYearProject.Controllers
         }
 
         [HttpPost]
+      
         public async Task<IActionResult> CashSent(CashSentViewModel model)
         {
             var username = User.Identity.Name;
-
             var user = await _userManager.FindByNameAsync(username);
 
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
@@ -106,7 +131,6 @@ namespace _2024FinalYearProject.Controllers
                 return View(model);
             }
 
-        
             bankAccount.Balance -= model.Amount;
 
             // Generate Cash Sent details
@@ -116,6 +140,7 @@ namespace _2024FinalYearProject.Controllers
                 BankAccountIdReceiver = 0, // Assuming 0 for cashless transactions
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
+                AppUserId = user.Id,
                 Reference = "CashSent",
             };
 
@@ -126,10 +151,21 @@ namespace _2024FinalYearProject.Controllers
             // Save the transaction
             await _repo.Transaction.AddAsync(transaction);
 
+            // Create a notification for Cash Sent
+            var notification = new Notification
+            {
+                Message = "You have successfully sent cash. Amount: {model.Amount:C}.",
+                NotificationDate = DateTime.Now,
+                IsRead = false,
+                AppUserId = user.Id
+            };
+            await _repo.Notification.AddAsync(notification);
+
             return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
         }
 
-     
+
+
         public IActionResult CashSentSuccess(string cashDigit, string pinNumber, DateTime transactionDate)
         {
             ViewBag.CashDigit = cashDigit;
@@ -189,7 +225,6 @@ namespace _2024FinalYearProject.Controllers
 
         public async Task<bool> TransferMoney(int senderBankAccountId, int receiverBankAccountId, decimal amount)
         {
-
             var senderBankAccount = await _repo.BankAccount.GetByIdAsync(senderBankAccountId);
             var receiverBankAccount = await _repo.BankAccount.GetByIdAsync(receiverBankAccountId);
 
@@ -204,7 +239,6 @@ namespace _2024FinalYearProject.Controllers
             receiverBankAccount.Balance += amount;
             await _repo.BankAccount.UpdateAsync(receiverBankAccount);
 
-
             var senderTransaction = new Transaction
             {
                 BankAccountIdSender = senderBankAccountId,
@@ -214,19 +248,39 @@ namespace _2024FinalYearProject.Controllers
                 AppUserId = senderBankAccount.AppUserId
             };
 
-            //  new transaction record for the receiver
+            // Create a notification for the sender
+            var senderNotification = new Notification
+            {
+                Message = "R You have sent {amount:C} to account {receiverBankAccount.AccountNumber}.",
+                NotificationDate = DateTime.UtcNow,
+                IsRead = false,
+                AppUserId = senderBankAccount.AppUserId
+            };
+
             var receiverTransaction = new Transaction
             {
                 BankAccountIdSender = senderBankAccountId,
                 BankAccountIdReceiver = receiverBankAccountId,
                 Amount = amount,
                 TransactionDate = DateTime.UtcNow,
-                AppUserId = receiverBankAccount.AppUserId 
+                AppUserId = receiverBankAccount.AppUserId
             };
 
+            // Create a notification for the receiver
+            var receiverNotification = new Notification
+            {
+                Message = "R You have received {amount:C} from account {senderBankAccount.AccountNumber}.",
+                NotificationDate = DateTime.UtcNow,
+                IsRead = false,
+                AppUserId = receiverBankAccount.AppUserId
+            };
 
             await _repo.Transaction.AddAsync(senderTransaction);
             await _repo.Transaction.AddAsync(receiverTransaction);
+
+            await _repo.Notification.AddAsync(senderNotification);
+            await _repo.Notification.AddAsync(receiverNotification);
+
             return true;
         }
 
@@ -266,15 +320,15 @@ namespace _2024FinalYearProject.Controllers
             var mainBankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
 
 
-            int senderBankAccountId = mainBankAccount.Id; 
+            int senderBankAccountId = mainBankAccount.Id;
             int receiverBankAccountId = model.ReceiverBankAccountId;
             decimal amount = model.Amount;
 
 
 
-         
 
-      
+
+
             var currentUserId = user.Id;
 
             // Check if the sender's bank account belongs to the current user
@@ -284,24 +338,34 @@ namespace _2024FinalYearProject.Controllers
                 return BadRequest("Invalid sender bank account.");
             }
 
-      
+
             var receiverBankAccount = await _repo.BankAccount.GetByIdAsync(receiverBankAccountId);
             if (receiverBankAccount == null)
             {
                 return BadRequest("Invalid receiver bank account.");
             }
 
-           
+
             bool done = await TransferMoney(senderBankAccountId, receiverBankAccountId, amount);
             if (done)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("TransferSuccess", new { amount = amount, receiverAccount = receiverBankAccount.AccountNumber });
             }
             else
             {
                 return RedirectToAction("Index");
             }
         }
+        public IActionResult TransferSuccess(decimal amount, string receiverAccount)
+        {
+            var model = new TransferSuccessViewModel
+            {
+                Amount = amount,
+                ReceiverAccount = receiverAccount
+            };
+            return View(model);
+        }
+
 
     }
 

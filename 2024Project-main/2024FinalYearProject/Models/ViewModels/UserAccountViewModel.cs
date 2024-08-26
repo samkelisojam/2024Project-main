@@ -66,6 +66,14 @@ namespace _2024FinalYearProject.Models.ViewModels
         public DateTime DateOfBirth { get; set; }
         public string AccountNumber { get; set; }
         public string IDNumber { get; set; }
+        public string Lastname { get; set; }
+
         public string Userrole { get; set; }
     }
+    public class TransferSuccessViewModel
+    {
+        public decimal Amount { get; set; }
+        public string ReceiverAccount { get; set; }
+    }
+
 }

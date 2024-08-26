@@ -1,7 +1,7 @@
 ﻿@model MoneyTransferViewModel
 
 <div class="container">
-    <h2>Transfer Money <i class="fas fa-exchange-alt"></i></h2>
+    <h2> Transfer Money <i class="fas fa-exchange-alt"></i></h2>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -14,7 +14,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="ReceiverBankAccountId" class="control-label">Receiver Account <i class="fas fa-user-circle"></i></label>
-                    <select asp-for="ReceiverBankAccountId" class="form-control" asp-items="ViewBag.ReceiverBankAccounts"></select>
+                    <input asp-for="ReceiverBankAccountId" class="form-control">/>
                     <span asp-validation-for="ReceiverBankAccountId" class="text-danger"></span>
                 </div>
                 <div class="form-group">

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model UpdateProfileViewModel
+
+@{
     ViewBag.Title = "Online Banking - User View";
 }
 
@@ -8,11 +10,13 @@
             <div class="user-profile text-center">
                 <img src="~/extras/whatsapp image 2024-05-05 at 14.24.54.jpeg" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
 
-                <h4 class="profile-name">John Doe</h4>
-                <p class="profile-info">ID Number: 123456789</p>
-                <p class="profile-info">Date of Birth: January 1, 1990</p>
-                <p class="profile-info">Email: johndoe@example.com</p>
-                <button class="btn btn-primary btn-update">Update Profile</button>
+                <h4 class="profile-name">@Model.Lastname</h4>
+                <p class="profile-info">ID Number: @Model.IDNumber</p>
+                <p class="profile-info">Account number: @Model.AccountNumber</p>
+                <p class="profile-info">Phone number: @Model.PhoneNumber</p>
+                <p class="profile-info">Date of Birth: @Model.DateOfBirth</p>
+                <p class="profile-info">Email: @Model.Email</p>
+                <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-primary btn-update">Update Profile</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -20,22 +24,28 @@
                 <div class="col">
                     <div class="functionality-buttons">
                         
-                        <a href="#" class="btn btn-warning btn-lg d-flex align-items-center text-dark custom-hover-2 mb-3">
+                        <a asp-action="TransferMoneyview" asp-controller="Client" class="btn btn-warning btn-lg d-flex align-items-center text-dark custom-hover-2 mb-3">
                             <i class="fas fa-credit-card mr-2"></i>
                             Transfer Money
                         </a>
-                        <a href="#" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover-5 mb-3">
+                        <a asp-action="ViewBankBalance" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover-5 mb-3">
                             <i class="fas fa-file-alt mr-2"></i>
                             View Bank Balance
                         </a>
-                        <a href="#" class="btn btn-secondary btn-lg d-flex align-items-center text-dark custom-hover-6 mb-3">
+                        <a asp-action="Transactions" asp-controller="Client" class="btn btn-secondary btn-lg d-flex align-items-center text-dark custom-hover-6 mb-3">
                             <i class="fas fa-history mr-2"></i>
                             View Previous Transactions & Print Bank Statements
                         </a>
-                        <a href="#" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
+                        <a asp-action="CashSent" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
                             <i class="fas fa-money-bill-alt mr-2"></i>
                             Varsity Cash Sent (Cardless)
                         </a>
+
+                        <a asp-action="NotificationMessage" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
+                            <i class="fas fa-message mr-2"></i>
+                            Notifiactions
+                        </a>
+                      
                     </div>
             </div>
         </div>
