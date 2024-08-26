@@ -12,8 +12,8 @@ using _2024FinalYearProject.Data;
 namespace _2024FinalYearProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240825192008_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20240826153130_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace _2024FinalYearProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2cf2d3b2-471f-4e6d-998b-3aed844a4ec0",
+                            Id = "13e0c03c-7a76-404b-96bc-3ac980fbf6c2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1068859b-97bc-4311-94bc-aff1c54d258e",
+                            Id = "aa0326a7-5081-40a4-b50e-d0c0adb213f7",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "8c294ba4-7b48-40f2-874b-f88f71bc0d4a",
+                            Id = "81a0a344-5cc2-4fd0-b657-55adc49ff449",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
                         });
@@ -186,9 +186,15 @@ namespace _2024FinalYearProject.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

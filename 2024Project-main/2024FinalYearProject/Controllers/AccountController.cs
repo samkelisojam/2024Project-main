@@ -54,6 +54,13 @@ namespace _2024FinalYearProject.Controllers
                     UserRole = registerModel.RegisterAs
                 };
 
+                Random rndAccount = new Random();
+                string _randomAccount = string.Empty;
+                do
+                { _randomAccount = rndAccount.Next(99999999, 999999999).ToString(); }
+                while (userManager.Users.Where(u => u.AccountNumber != _randomAccount).FirstOrDefault() == null);
+                user.AccountNumber = _randomAccount;
+
                 IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
                 if (result.Succeeded)
                 {
@@ -61,7 +68,11 @@ namespace _2024FinalYearProject.Controllers
                     var signin_result = await signInManager.PasswordSignInAsync(user, registerModel.Password,
                         isPersistent: false, lockoutOnFailure: false);
                     if (signin_result.Succeeded)
+                    {
+                        if (await userManager.IsInRoleAsync(user, "Consultant"))
+                            return RedirectToAction("Index", "Consultantf");
                         return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                     foreach (var error in result.Errors.Select(e => e.Description))
@@ -80,10 +91,10 @@ namespace _2024FinalYearProject.Controllers
             {
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-              
+
                 IDNumber = user.IDnumber,
 
-                Userrole=user.UserRole
+                Userrole = user.UserRole
             };
             return View(model);
         }
@@ -137,6 +148,8 @@ namespace _2024FinalYearProject.Controllers
                         (user, model.Password, isPersistent: model.RememberMe, false);
                     if (result.Succeeded)
                     {
+                        if (await userManager.IsInRoleAsync(user, "Consultant"))
+                            return RedirectToAction("Index", "Consultant");
                         return Redirect(model?.ReturnUrl ?? "/Home/Index");
                     }
                 }

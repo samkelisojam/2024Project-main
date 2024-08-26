@@ -32,11 +32,12 @@ namespace _2024FinalYearProject.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StudentStaffNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IDnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -257,11 +258,9 @@ namespace _2024FinalYearProject.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4fe9c6d4-b25c-4d5c-9a15-7edb3cee631a", null, "Student", "STUDENT" },
-                    { "66c45ef7-7060-4327-a96d-a789829ad97a", null, "Consultant", "CONSULTANT" },
-                    { "854fa539-c08f-4edb-a63b-3d6680857ce0", null, "Admin", "ADMIN" },
-                    { "c2cc7ad2-7b45-4349-955e-cf078161ec49", null, "User", "USER" },
-                    { "e0670559-1ef0-48db-a7fe-bae0926769c9", null, "Staff", "STAFF" }
+                    { "13e0c03c-7a76-404b-96bc-3ac980fbf6c2", null, "Admin", "ADMIN" },
+                    { "81a0a344-5cc2-4fd0-b657-55adc49ff449", null, "Consultant", "CONSULTANT" },
+                    { "aa0326a7-5081-40a4-b50e-d0c0adb213f7", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

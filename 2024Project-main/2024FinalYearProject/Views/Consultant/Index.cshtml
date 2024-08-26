@@ -1,0 +1,49 @@
+@model ConsultantViewModel
+
+<main>
+    <h1>Consultant</h1>
+    <div class="row">
+        <div class="col-4">
+            <div class="list-group">
+
+                <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
+                    asp-controller="Consultant">View Clients</a>
+                <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
+                    asp-controller="Consultant">Manage Logins</a>
+                <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
+                    asp-controller="Consultant">Generate Report</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <h3>Clients</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Account No</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Id Number</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                </thead>
+                <tbody> @foreach (var user in Model.appUsers)
+                    {
+                        <tr>
+                            <th scope="row">@user.AccountNumber</th>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.IDnumber</td>
+                            <td>@user.UserRole</td>
+                            <td>
+                                <button class="btn btn-warning">Edit</button>
+                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-primary-outline">View Logins</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</main>
