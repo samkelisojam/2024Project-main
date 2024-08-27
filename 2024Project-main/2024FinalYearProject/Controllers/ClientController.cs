@@ -154,7 +154,7 @@ namespace _2024FinalYearProject.Controllers
             // Create a notification for Cash Sent
             var notification = new Notification
             {
-                Message = "You have successfully sent cash. Amount: {model.Amount:C}.",
+                Message = $"You have successfully sent cash. Amount: {model.Amount:C}.",
                 NotificationDate = DateTime.Now,
                 IsRead = false,
                 AppUserId = user.Id
