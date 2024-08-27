@@ -61,6 +61,28 @@ namespace _2024FinalYearProject.Controllers
                 while (userManager.Users.Where(u => u.AccountNumber != _randomAccount).FirstOrDefault() == null);
                 user.AccountNumber = _randomAccount;
 
+                BankAccount bankAccountMain = new()
+                {
+                    AccountNumber = _randomAccount,
+                    Balance = 600m,
+                    BankAccountType = "Savings",
+                    AccountOrder = 1,
+                    AppUserId = user.Id,
+
+                };
+                wrapper.BankAccount.AddAsync(bankAccountMain);
+                Transaction transaction = new()
+                {
+                    BankAccountIdReceiver = int.Parse(_randomAccount),
+                    Amount = 600m,
+                    Reference = "fee Open new account ",
+                    AppUserId = user.Id,
+
+                };
+                wrapper.Transaction.AddAsync(transaction);
+
+
+
                 IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
                 if (result.Succeeded)
                 {
@@ -94,8 +116,10 @@ namespace _2024FinalYearProject.Controllers
 
                 IDNumber = user.IDnumber,
 
-                Userrole = user.UserRole
-            };
+                Userrole = user.UserRole,
+                 Lastname=user.LastName +" "+user.FirstName,
+        
+        };
             return View(model);
         }
 
