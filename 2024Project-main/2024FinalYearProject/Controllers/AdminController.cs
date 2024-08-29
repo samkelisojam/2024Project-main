@@ -1,12 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using _2024FinalYearProject.Data.Interfaces;
+using _2024FinalYearProject.Models;
+using _2024FinalYearProject.Models.ViewModels.Admin;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace _2024FinalYearProject.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        private readonly IRepositoryWrapper _wrapper;
+        private readonly UserManager<AppUser> _userManager;
+
+        public AdminController(IRepositoryWrapper wrapper , UserManager<AppUser> userManager )
         {
-            return View();
+            _wrapper = wrapper;
+            _userManager = userManager;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var transactions = await _wrapper.Transaction.GetAllAsync();
+            var consultants =  (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+            var users =  (await _userManager.GetUsersInRoleAsync("User")).ToList();
+
+            var indexPageViewModel = new IndexPageViewModel()
+            {
+                Transactions = transactions ,
+                Consultants = consultants,
+                Users = users
+
+            };
+
+            return View(indexPageViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Users()
+        {
+            var users =  await _wrapper.AppUser.GetAllUsersAndBankAccount("User");
+            var userPageViewModel = new UserPageViewModel()
+            {
+                AppUsers = users
+            };
+            
+            return View(userPageViewModel);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace _2024FinalYearProject.Data
         private IReviewRepository _Review;
         private INotificationRepository _Notification;
         private IBankAccountRepository _bankAccount;
+        private IUserRepository _appUser;
         public RepositoryWrapper(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -79,6 +80,20 @@ namespace _2024FinalYearProject.Data
                 return _Review;
             }
         }
+
+        public IUserRepository AppUser
+        {
+            get
+            {
+                if (_appUser == null)
+                {
+                    _appUser = new UserRepository(_appDbContext);
+                }
+
+                return _appUser;
+            }
+        }
+
         public void SaveChanges()
         {
             _appDbContext.SaveChanges();
