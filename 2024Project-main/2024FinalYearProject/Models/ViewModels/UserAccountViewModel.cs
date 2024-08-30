@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace _2024FinalYearProject.Models.ViewModels
 {
@@ -69,6 +65,20 @@ namespace _2024FinalYearProject.Models.ViewModels
         public string Lastname { get; set; }
 
         public string Userrole { get; set; }
+    }
+
+    public class ConsultantUpdateUserModel : UpdateProfileViewModel
+    {
+        [Required(ErrorMessage = "Please enter password")]
+        [DisplayName("Password")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Please confirm password")]
+        [DisplayName("Confirm password")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords must match")]
+        public string ConfirmPassword { get; set; }
     }
     public class TransferSuccessViewModel
     {

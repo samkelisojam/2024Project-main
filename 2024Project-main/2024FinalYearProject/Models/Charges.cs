@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace _2024FinalYearProject.Models
+﻿namespace _2024FinalYearProject.Models
 {
     public class Charges
     {
@@ -10,10 +8,7 @@ namespace _2024FinalYearProject.Models
         public DateTime ChargeDate { get; set; }
         public string Description { get; set; }
 
-        //Nav property 
-        [ForeignKey(nameof(AppUserId))]
-        public string AppUserId { get; set; } // Foreign key to AppUser
-        public AppUser AppUser { get; set; }
+        public string UserEmail { get; set; }
     }
 
 }

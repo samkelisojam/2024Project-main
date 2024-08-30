@@ -10,6 +10,7 @@ namespace _2024FinalYearProject.Data
         private IReviewRepository _Review;
         private INotificationRepository _Notification;
         private IBankAccountRepository _bankAccount;
+        private ILoginRepository _logins;
         public RepositoryWrapper(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -25,6 +26,19 @@ namespace _2024FinalYearProject.Data
                 }
 
                 return _bankAccount;
+            }
+        }
+
+        public ILoginRepository Logins
+        {
+            get
+            {
+                if (_logins == null)
+                {
+                    _logins = new LoginRepository(_appDbContext);
+                }
+
+                return _logins;
             }
         }
 

@@ -1,14 +1,9 @@
-﻿
-using _2024FinalYearProject.Data;
-using _2024FinalYearProject.Data.Interfaces;
+﻿using _2024FinalYearProject.Data.Interfaces;
 using _2024FinalYearProject.Models;
 
 using _2024FinalYearProject.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace _2024FinalYearProject.Controllers
 {
@@ -57,7 +52,7 @@ namespace _2024FinalYearProject.Controllers
             }
 
             var allNotifications = await _repo.Notification.GetAllAsync();
-            var userNotifications = allNotifications.Where(n => n.AppUserId == user.Id).ToList();
+            var userNotifications = allNotifications.Where(n => n.UserEmail == user.Email).ToList();
 
             foreach (var notification in userNotifications)
             {
@@ -86,7 +81,7 @@ namespace _2024FinalYearProject.Controllers
             }
             var allTransaction = await _repo.Transaction.GetAllAsync();
 
-            var userTransaction = allTransaction.Where(n => n.AppUserId == user.Id).ToList();
+            var userTransaction = allTransaction.Where(n => n.UserEmail == user.Email).ToList();
 
             return View(userTransaction);
         }
@@ -99,7 +94,7 @@ namespace _2024FinalYearProject.Controllers
             var user = await _userManager.FindByNameAsync(username);
 
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
 
             if (bankAccount == null)
             {
@@ -123,7 +118,7 @@ namespace _2024FinalYearProject.Controllers
             var user = await _userManager.FindByNameAsync(username);
 
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
 
             if (bankAccount == null || bankAccount.Balance < model.Amount)
             {
@@ -140,7 +135,7 @@ namespace _2024FinalYearProject.Controllers
                 BankAccountIdReceiver = 0, // Assuming 0 for cashless transactions
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
-                AppUserId = user.Id,
+                UserEmail = user.Email,
                 Reference = "CashSent",
             };
 
@@ -157,7 +152,7 @@ namespace _2024FinalYearProject.Controllers
                 Message = $"You have successfully sent cash. Amount: {model.Amount:C}.",
                 NotificationDate = DateTime.Now,
                 IsRead = false,
-                AppUserId = user.Id
+                UserEmail = user.Email
             };
             await _repo.Notification.AddAsync(notification);
 
@@ -210,7 +205,7 @@ namespace _2024FinalYearProject.Controllers
 
             var user = await _userManager.FindByNameAsync(username);
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
             var viewModel = new BankAccountViewModela
             {
                 AccountNumber = bankAccount.AccountNumber,
@@ -223,9 +218,9 @@ namespace _2024FinalYearProject.Controllers
 
 
 
-      
 
- 
+
+
         public async Task<bool> TransferMoney(string senderAccountNumber, string receiverAccountNumber, decimal amount)
         {
             // Get all bank accounts
@@ -261,14 +256,14 @@ namespace _2024FinalYearProject.Controllers
                 Message = $"You have sent {amount:C} to account {receiverBankAccount.AccountNumber}.",
                 NotificationDate = DateTime.UtcNow,
                 IsRead = false,
-                AppUserId = senderBankAccount.AppUserId
+                UserEmail = senderBankAccount.UserEmail
             };
             var receiverNotification = new Notification
             {
                 Message = $"You have received {amount:C} from account {senderBankAccount.AccountNumber}.",
                 NotificationDate = DateTime.UtcNow,
                 IsRead = false,
-                AppUserId = receiverBankAccount.AppUserId
+                UserEmail = receiverBankAccount.UserEmail
             };
 
             await _repo.Notification.AddAsync(senderNotification);
@@ -285,11 +280,11 @@ namespace _2024FinalYearProject.Controllers
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
 
-       
-            var allBankAccounts = await _repo.BankAccount.GetAllAsync();
-            var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
 
-          
+            var allBankAccounts = await _repo.BankAccount.GetAllAsync();
+            var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
+
+
             var viewModel = new MoneyTransferViewModel
             {
                 SenderBankAccountNumber = mainBankAccount.AccountNumber,
@@ -307,13 +302,13 @@ namespace _2024FinalYearProject.Controllers
 
             // Get all bank accounts for the user
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
-            var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.AppUserId == user.Id && b.AccountOrder == 1);
+            var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
 
             string senderAccountNumber = mainBankAccount.AccountNumber;
             string receiverAccountNumber = model.ReceiverBankAccountNumber;
             decimal amount = model.Amount;
 
-       
+
             bool transferSuccess = await TransferMoney(senderAccountNumber, receiverAccountNumber, amount);
 
             if (transferSuccess)
@@ -338,7 +333,7 @@ namespace _2024FinalYearProject.Controllers
         }
 
 
-     
+
 
 
 
