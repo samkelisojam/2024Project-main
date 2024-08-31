@@ -57,29 +57,11 @@ namespace _2024FinalYearProject.Controllers
                 Random rndAccount = new Random();
                 string _randomAccount = string.Empty;
                 do
-                { _randomAccount = rndAccount.Next(99999999, 999999999).ToString(); }
+                {
+                    _randomAccount = rndAccount.Next(99999999, 999999999).ToString();
+                }
                 while (userManager.Users.Where(u => u.AccountNumber != _randomAccount).FirstOrDefault() == null);
                 user.AccountNumber = _randomAccount;
-
-                BankAccount bankAccountMain = new()
-                {
-                    AccountNumber = _randomAccount,
-                    Balance = 600m,
-                    BankAccountType = "Savings",
-                    AccountOrder = 1,
-                    AppUserId = user.Id,
-
-                };
-                wrapper.BankAccount.AddAsync(bankAccountMain);
-                Transaction transaction = new()
-                {
-                    BankAccountIdReceiver = int.Parse(_randomAccount),
-                    Amount = 600m,
-                    Reference = "fee Open new account ",
-                    AppUserId = user.Id,
-
-                };
-                wrapper.Transaction.AddAsync(transaction);
 
 
 
@@ -87,12 +69,38 @@ namespace _2024FinalYearProject.Controllers
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, role);
+                    BankAccount bankAccountMain = new()
+                    {
+                        AccountNumber = _randomAccount,
+                        Balance = 600m,
+                        BankAccountType = "Savings",
+                        AccountOrder = 1,
+                        UserEmail = user.Email,
+                    };
+                    await wrapper.BankAccount.AddAsync(bankAccountMain);
+                    Transaction transaction = new()
+                    {
+                        BankAccountIdReceiver = int.Parse(_randomAccount),
+                        Amount = 600m,
+                        Reference = "fee Open new account ",
+                        UserEmail = user.Email,
+
+                    };
+                    await wrapper.Transaction.AddAsync(transaction);
                     var signin_result = await signInManager.PasswordSignInAsync(user, registerModel.Password,
                         isPersistent: false, lockoutOnFailure: false);
                     if (signin_result.Succeeded)
                     {
+                        var newLogin = new LoginSessions
+                        {
+                            TimeStamp = DateTime.Now,
+                            UserEmail = user.Email,
+                        };
+                        await wrapper.Logins.AddAsync(newLogin);
+                        wrapper.SaveChanges();
+
                         if (await userManager.IsInRoleAsync(user, "Consultant"))
-                            return RedirectToAction("Index", "Consultantf");
+                            return RedirectToAction("Index", "Consultant");
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -117,9 +125,9 @@ namespace _2024FinalYearProject.Controllers
                 IDNumber = user.IDnumber,
 
                 Userrole = user.UserRole,
-                 Lastname=user.LastName +" "+user.FirstName,
-        
-        };
+                Lastname = user.LastName + " " + user.FirstName,
+
+            };
             return View(model);
         }
 
@@ -128,22 +136,28 @@ namespace _2024FinalYearProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var username = User.Identity.Name;
-
-                var user = await userManager.FindByNameAsync(username);
-                user.Email = model.Email;
-                user.PhoneNumber = model.PhoneNumber;
-                var result = await userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "Home");
+                    user.Email = model.Email;
+                    user.PhoneNumber = model.PhoneNumber;
+                    var result = await userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    ModelState.AddModelError("", "Could not find user, please contact system admin");
+                    return View(model);
                 }
             }
             return View(model);
@@ -172,6 +186,14 @@ namespace _2024FinalYearProject.Controllers
                         (user, model.Password, isPersistent: model.RememberMe, false);
                     if (result.Succeeded)
                     {
+                        var newLogin = new LoginSessions
+                        {
+                            TimeStamp = DateTime.Now,
+                            UserEmail = user.Email,
+                        };
+                        await wrapper.Logins.AddAsync(newLogin);
+                        wrapper.SaveChanges();
+
                         if (await userManager.IsInRoleAsync(user, "Consultant"))
                             return RedirectToAction("Index", "Consultant");
                         return Redirect(model?.ReturnUrl ?? "/Home/Index");

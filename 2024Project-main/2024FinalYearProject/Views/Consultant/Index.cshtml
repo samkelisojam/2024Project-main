@@ -1,49 +1,70 @@
 @model ConsultantViewModel
 
-<main>
-    <h1>Consultant</h1>
+<div class="container mt-4">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+            @TempData["Message"]
+        </div>
+    }
+    <h3 class="mb-5">Consultant Control Panel</h3>
     <div class="row">
-        <div class="col-4">
+        <div class="col-md-2">
             <div class="list-group">
 
-                <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
+                <a class="list-group-item list-group-item-action active" asp-action="Index"
                     asp-controller="Consultant">View Clients</a>
                 <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
-                    asp-controller="Consultant">Manage Logins</a>
-                <a class="list-group-item list-group-item-action" asp-action="GenerateReport"
-                    asp-controller="Consultant">Generate Report</a>
+                   asp-controller="Consultant">Generate Report</a>
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-md-10">
             <h3>Clients</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Account No</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Id Number</th>
-                        <th scope="col">Role</th>
-                    </tr>
-                </thead>
-                <tbody> @foreach (var user in Model.appUsers)
-                    {
+            @if (Model.appUsers.Count() > 0)
+            {
+                <table class="table table-striped-columns">
+                    <thead>
                         <tr>
-                            <th scope="row">@user.AccountNumber</th>
-                            <td>@user.FirstName</td>
-                            <td>@user.LastName</td>
-                            <td>@user.IDnumber</td>
-                            <td>@user.UserRole</td>
-                            <td>
-                                <button class="btn btn-warning">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
-                                <a class="btn btn-primary-outline">View Logins</a>
-                            </td>
+                            <th scope="col">Account No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Student/Staff No.</th>
+                            <th scope="col">Deposit/Withdraw</th>
+                            <th scope="col">Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-
+                    </thead>
+                    <tbody> @foreach (var user in Model.appUsers)
+                        {
+                            <tr>
+                                <th scope="row">@user.AccountNumber &nbsp;<span class="badge bg-success">Active</span></th>
+                                <td>@(user.FirstName + " " + user.LastName)</td>
+                                <td>@user.Email</td>
+                                <td>@user.StudentStaffNumber</td>
+                                <td>
+                                    <a class="btn btn-warning" asp-action="DepositWithdraw" asp-controller="Consultant" asp-route-email="@user.Email">
+                                        <i class="fa-solid fa-money-bill-transfer"></i>
+                                    </a>  
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning" asp-action="ConsultantUpdateUser" asp-controller="Consultant" asp-route-email="@user.Email">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
+                                    <a class="btn btn-danger" asp-action="ConsultantDeleteUser" asp-controller="Consultant" asp-route-email="@user.Email" onclick="return confirm(`Are you sure you want to delete user: ${@user.Email} ?`);">
+                                        <span class="fa-solid fa-trash"></span>
+                                    </a>
+                                    <a class="btn btn-outline-primary"
+                                    asp-action="ViewAllLogins" asp-controller="Consultant" asp-route-email="@user.Email">View Logins</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h1>No users found</h1>
+            }
         </div>
     </div>
-</main>
+</div>

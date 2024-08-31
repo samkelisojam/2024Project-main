@@ -6,7 +6,7 @@
         IReviewRepository Review { get; }
         IChargesRepository Charges { get; }
         IBankAccountRepository BankAccount { get; }
-
+        ILoginRepository Logins { get; }
         INotificationRepository Notification { get; }
         void SaveChanges();
     }

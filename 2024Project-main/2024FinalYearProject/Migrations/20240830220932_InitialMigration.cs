@@ -60,6 +60,23 @@ namespace _2024FinalYearProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BankAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BankAccountType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountOrder = table.Column<int>(type: "int", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankAccounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FeedBacks",
                 columns: table => new
                 {
@@ -68,11 +85,41 @@ namespace _2024FinalYearProject.Migrations
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     dateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rate = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FeedBacks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoginSessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginSessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NotificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,49 +229,6 @@ namespace _2024FinalYearProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BankAccounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BankAccountType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccountOrder = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BankAccounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BankAccounts_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NotificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -235,17 +239,12 @@ namespace _2024FinalYearProject.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Reference = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankAccountId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transactions_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Transactions_BankAccounts_BankAccountId",
                         column: x => x.BankAccountId,
@@ -258,9 +257,9 @@ namespace _2024FinalYearProject.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "13e0c03c-7a76-404b-96bc-3ac980fbf6c2", null, "Admin", "ADMIN" },
-                    { "81a0a344-5cc2-4fd0-b657-55adc49ff449", null, "Consultant", "CONSULTANT" },
-                    { "aa0326a7-5081-40a4-b50e-d0c0adb213f7", null, "User", "USER" }
+                    { "9f4e3c72-c59a-4258-9dbc-1c16f6772975", null, "Admin", "ADMIN" },
+                    { "b9498702-003f-421c-b195-0e7f1fb6bafc", null, "User", "USER" },
+                    { "f5774db3-d5ae-4082-98e8-35f9dc3f0431", null, "Consultant", "CONSULTANT" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -303,21 +302,6 @@ namespace _2024FinalYearProject.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankAccounts_AppUserId",
-                table: "BankAccounts",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notifications_AppUserId",
-                table: "Notifications",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_AppUserId",
-                table: "Transactions",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_BankAccountId",
                 table: "Transactions",
                 column: "BankAccountId");
@@ -345,6 +329,9 @@ namespace _2024FinalYearProject.Migrations
                 name: "FeedBacks");
 
             migrationBuilder.DropTable(
+                name: "LoginSessions");
+
+            migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
@@ -354,10 +341,10 @@ namespace _2024FinalYearProject.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "BankAccounts");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "BankAccounts");
         }
     }
 }

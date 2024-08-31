@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace _2024FinalYearProject.Models
+﻿namespace _2024FinalYearProject.Models
 {
     public class FeedBack
     {
@@ -9,10 +7,7 @@ namespace _2024FinalYearProject.Models
         public DateTime dateTime { get; set; }
         public int Rate { get; set; }
 
-        //Nav property
-        [ForeignKey(nameof(AppUserId))]
-        public string AppUserId { get; set; }
-        AppUser appUser { get; set; }
+        public string UserEmail { get; set; }
     }
 
 
