@@ -36,13 +36,21 @@ namespace _2024FinalYearProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Users()
         {
-            var users =  await _wrapper.AppUser.GetAllUsersAndBankAccount("User");
+            var users =  await _wrapper.AppUser.GetAllUsersAndBankAccount("Consultant");
             var userPageViewModel = new UserPageViewModel()
             {
                 AppUsers = users
             };
             
             return View(userPageViewModel);
+        }
+
+        //delete transaction
+        [HttpPost]
+        public async Task<IActionResult> DeleteTransaction(int id)
+        {
+            await _wrapper.Transaction.RemoveAsync(id);
+            return RedirectToAction("Index");
         }
     }
 }
