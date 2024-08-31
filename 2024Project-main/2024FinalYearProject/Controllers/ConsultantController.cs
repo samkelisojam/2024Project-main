@@ -4,6 +4,8 @@ using _2024FinalYearProject.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System.Text;
 
 namespace _2024FinalYearProject.Controllers
 {
@@ -44,6 +46,7 @@ namespace _2024FinalYearProject.Controllers
             if (user != null)
             {
                 var allLogins = await wrapper.Logins.GetAllAsync();
+                var userBankAccount = (await wrapper.BankAccount.GetAllAsync()).FirstOrDefault(bc => bc.AccountNumber == user.AccountNumber);
                 return View(new ConsultantViewModel
                 {
                     SelectedUser = user,
@@ -52,16 +55,82 @@ namespace _2024FinalYearProject.Controllers
             }
             return View("Index");
         }
-
-        public IActionResult ChangePassword(string userId)
+        public async Task<IActionResult> DepositWithdraw(string email)
         {
-            return View();
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                return View(new ConsultantDepositModel
+                {
+                    AccountNumber = user.AccountNumber,
+                    UserEmail = user.Email,
+                });
+            }
+            return RedirectToAction("Index", "Consultant");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DepositWithdraw(ConsultantDepositModel model, string action)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.UserEmail);
+                if (user != null)
+                {
+                    var AllBankAcc = await wrapper.BankAccount.GetAllAsync();
+                    var userBankAcc = AllBankAcc.FirstOrDefault(bc => bc.UserEmail == user.Email);
+                    if (userBankAcc != null)
+                    {
+                        if (action.ToLower() == "deposit")
+                        {
+                            userBankAcc.Balance += model.Amount;
+                        }
+                        else
+                        {
+                            if (userBankAcc.Balance - model.Amount < -50)
+                            {
+                                ModelState.AddModelError("", "User has insuffecient balance in their account");
+                                return View(model);
+                            }
+                            userBankAcc.Balance -= model.Amount;
+                        }
+                        await wrapper.BankAccount.UpdateAsync(userBankAcc);
+                        var transaction = new Transaction
+                        {
+                            Amount = model.Amount,
+                            UserEmail = model.UserEmail,
+                            Reference = $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(action)} cash in account",
+                            BankAccountIdReceiver = int.Parse(user.AccountNumber),
+                            BankAccountIdSender = 0,
+                            TransactionDate = DateTime.Now
+                        };
+                        await wrapper.Transaction.AddAsync(transaction);
+                        wrapper.SaveChanges();
+                        Message = $"Money Successfully {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(action)} to account";
+                        return RedirectToAction("Index", "Consultant");
+                    }
+                    else
+                    {
+                        Message = "Couldn't find bank account, please contact system administrator";
+                        ModelState.AddModelError("", "Couldn't find bank account");
+                    }
+                }
+                else
+                {
+                    Message = "Couldn't find user, please contact system administrator";
+                    ModelState.AddModelError("", "Couldn't find user");
+                }
+            }
+            return View(model);
+        }
+
         [HttpPost]
         public IActionResult ChangePassword()
         {
             return View();
         }
+
         public async Task<IActionResult> ConsultantDeleteUser(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -144,11 +213,44 @@ namespace _2024FinalYearProject.Controllers
             }
             return View(model);
         }
-        [HttpPost]
-        public IActionResult GenerateReport()
+
+
+        [HttpGet]
+        public async Task<IActionResult> GenerateReport()
         {
-            //Please add code here
-            return View();
+            try
+            {
+                List<string> data = new List<string>();
+                var reportContent = $"Banking Application\n{DateTime.Now:yyyyMMddHHmmss}\n\n" +
+                    $"***Users\\Clients***\n" +
+                    $"=====================\n" +
+                    $"Account No\tFirst Name\tLast Name\tEmail Address\tStudent Number\n\n";
+                var report = userManager.Users;
+                foreach (var u in report)
+                {
+                    if (await userManager.IsInRoleAsync(u, "User"))
+                    {
+                        data.Add($"{u.AccountNumber}\t{u.FirstName}\t{u.LastName}\t{u.Email}\t{u.StudentStaffNumber}\n");
+                    }
+                }
+                reportContent += string.Join('\n', data.ToArray());
+
+
+                reportContent += $"\n***All Transactions***\n" +
+                                 $"==========================\n" +
+                    $"Account No\tFirst Name\tLast Name\tEmail Address\tStudent Number\n\n";
+                var transactions = await wrapper.Transaction.GetAllAsync();
+                reportContent += string.Join('\n', transactions.Select(u => $"{u.UserEmail}\t{u.Amount}\t{u.BankAccountIdReceiver}\t{u.BankAccountIdSender}\n").ToArray());
+
+                var contentBytes = Encoding.UTF8.GetBytes(reportContent);
+                var fileName = $"Report_{DateTime.Now:yyyyMMddHHmmss}.txt";
+
+                return File(contentBytes, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error generating report: {ex.Message}");
+            }
         }
     }
 }
