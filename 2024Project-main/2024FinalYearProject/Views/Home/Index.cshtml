@@ -1,57 +1,124 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿<style>
+     body {
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #1a2b3c;
+        }
+        .hero {
+            background-color: #1a2b3c;
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: white;
+            transform: skewY(-3deg);
+        }
+        .credit-card {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 300px;
+            transform: rotate(15deg);
+        }
+        .features {
+            padding: 50px 0;
+        }
+        .trusted-by {
+            background-color: #f8f9fa;
+            padding: 30px 0;
+        }
+        .cta-section {
+            padding: 50px 0;
+        }
+    </style>
 
-<!-- Page Background Color -->
-<style>
-    body {
-        background-color: #fff; /* Light, soft background color */
-    }
-</style>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">XYZ Bank</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">How it Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                <button class="btn btn-outline-light ms-2">Sign in</button>
+                <button class="btn btn-warning ms-2">Sign up</button>
+            </div>
+        </div>
+    </nav>
 
-<!-- Hero Section -->
-<div class="container-fluid hero-section text-white text-center d-flex justify-content-center align-items-center"
-     style="background-image: url('@Url.Content("~/images/bg.jpg")'); height: 60vh; background-size: cover; background-position: center;">
-    <div class="hero-content">
-        <h1 class="display-4">Welcome to Your Secure Banking Solution</h1>
-        <p class="lead">Manage your finances effortlessly with our cutting-edge online banking platform.</p>
-    </div>
-</div>
-
-<!-- Key Functionalities Section -->
-<div class="container py-5">
-    <div class="row text-center">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Apply for an Account</h5>
-                    <p class="card-text">Open an account in minutes with our simple, secure process.</p>
-                    <a href="@Url.Action("Apply", "Account")" class="btn btn-primary">Get Started</a>
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>You have options, we have solutions!</h1>
+                    <p>Experience banking reimagined with our innovative solutions tailored to your needs.</p>
+                    <button class="btn btn-warning btn-lg">Get Started</button>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Make Payments</h5>
-                    <p class="card-text">Pay bills, transfer funds, and manage your payments easily.</p>
-                    <a href="@Url.Action("MakePayment", "Payment")" class="btn btn-primary">Make a Payment</a>
+    <img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Credit Card" class="credit-card">
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="text-center mb-5">Hot Deals For You</h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-percentage fa-3x mb-3"></i>
+                    <h3>2.5% Instant Cashback</h3>
+                    <p>Earn cashback on all your purchases</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-calendar-alt fa-3x mb-3"></i>
+                    <h3>30 Days Terms</h3>
+                    <p>Flexible payment terms for your convenience</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-piggy-bank fa-3x mb-3"></i>
+                    <h3>Save Money</h3>
+                    <p>Great interest rates on savings accounts</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-exchange-alt fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Peer-to-Peer Transfer</h5>
-                    <p class="card-text">Send money instantly to friends and family with just a few clicks.</p>
-                    <a href="@Url.Action("Transfer", "Transfer")" class="btn btn-primary">Transfer Now</a>
+    </section>
+
+    <section class="trusted-by">
+        <div class="container">
+            <h2 class="text-center mb-4">We Are Trusted By</h2>
+            <div class="row align-items-center">
+            <div class="col"><img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Partner 1" class="img-fluid"></div>
+            <div class="col"><img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Partner 2" class="img-fluid"></div>
+            <div class="col"><img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Partner 3" class="img-fluid"></div>
+            <div class="col"><img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Partner 4" class="img-fluid"></div>
+            <div class="col"><img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Partner 5" class="img-fluid"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                <img src="https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg" alt="Credit Cards" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h2>Find a better card deals in few easy steps.</h2>
+                    <p>Choose from our wide range of credit cards tailored to your needs. Whether you're looking for cashback, travel rewards, or low interest rates, we've got you covered.</p>
+                    <button class="btn btn-primary">Learn More</button>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-
+    </section>
