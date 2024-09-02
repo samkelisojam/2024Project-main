@@ -98,7 +98,8 @@ namespace _2024FinalYearProject.Controllers
 
             if (bankAccount == null)
             {
-                return NotFound("Main bank account not found.");
+                return View("NotFound");
+
             }
 
             var model = new CashSentViewModel
@@ -223,7 +224,7 @@ namespace _2024FinalYearProject.Controllers
 
         public async Task<bool> TransferMoney(string senderAccountNumber, string receiverAccountNumber, decimal amount)
         {
-            // Get all bank accounts
+            
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
 
             // Find sender and receiver bank accounts
@@ -250,7 +251,7 @@ namespace _2024FinalYearProject.Controllers
             await _repo.BankAccount.UpdateAsync(senderBankAccount);
             await _repo.BankAccount.UpdateAsync(receiverBankAccount);
 
-            //  // Create and save notifications
+          
             var senderNotification = new Notification
             {
                 Message = $"You have sent {amount:C} to account {receiverBankAccount.AccountNumber}.",
@@ -317,7 +318,8 @@ namespace _2024FinalYearProject.Controllers
             }
             else
             {
-                return BadRequest("Transfer failed.");
+                      return View("NotFound");
+                
             }
         }
 
