@@ -12,56 +12,69 @@
     <link rel="stylesheet" href="~/_2024FinalYearProject.styles.css" asp-append-version="true" />
 </head>
 
+@{
+    string action = ViewContext.RouteData.Values["action"].ToString();
+    string controller = ViewContext.RouteData.Values["controller"].ToString();
+}
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+
+        @* Search Nav All of them will appear *@
+        @* uncomment other navs to test *@
+
+        @* Nav1 start*@
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+            <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">_2024FinalYearProject</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark @(action == "Index" && controller == "Home" ? "active fw-bold text-uppercase" : "")" asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-piggy-bank"></i>&nbsp;&nbsp;Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Privacy</a>
-                        </li>
-
-                     
-                        @if (User.IsInRole("Consultant"))
+                        @if (User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Consultant" asp-action="Index">Consultant Panel</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("User")  )
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">
-                                    User
-                                    -Dashboard
+                                <a class="nav-link text-dark @(action == "Index" && controller == "Client" ? "active fw-bold text-uppercase" : "")" asp-area="" asp-controller="Client" asp-action="Index">
+                                    <i class="fa-solid fa-user-tie"></i> &nbsp;&nbsp;User-Dashboard
                                 </a>
                             </li>
                         }
-                        
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark @(action == "Privacy" && controller == "Home" ? "active fw-bold text-uppercase" : "")" asp-area="" asp-controller="Home"
+                               asp-action="Privacy"><i class="fa-solid fa-shield-halved"></i>&nbsp;&nbsp;Privacy</a>
+                        </li>
+
+
+                        @if (User.IsInRole("Consultant"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark @(action == "Index" && controller == "Consultant" ? "active fw-bold text-uppercase" : "")" asp-area="" asp-controller="Consultant" asp-action="Index"><i class="fa-regular fa-life-ring"></i>&nbsp;&nbsp;Consultant Panel</a>
+                            </li>
+                        }
                     </ul>
                     <div>
+
                         @if (!User.Identity.IsAuthenticated)
                         {
-                            <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Login</a>
+                            <a asp-action="Login" asp-controller="Account" class="btn btn-primary"> <i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
                             <a asp-action="Register" asp-controller="Account" class="btn btn-primary-outline">Register</a>
                         }
                         else
                         {
                             <div style="cursor: pointer;" class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Hello,
-                                    @User.Identity.Name</a>
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Hello,
+                                    @User.Identity.Name
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+                                    <li>
+                                        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
                                     </li>
                                 </ul>
                             </div>
@@ -70,6 +83,264 @@
                 </div>
             </div>
         </nav>
+        @* Nav1 end *@
+
+
+        @* Nav2 start*@
+        @*  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
+        <div class="container">
+        <a class="navbar-brand" href="#">APP NAME</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+        <li class="nav-item">
+        <a class="nav-link mx-2 @(action == "Index" && controller == "Home" ? "active fw-bold" : "")" asp-action="Index" asp-controller="Home">Home</a>
+        </li>
+        @if (User.IsInRole("User"))
+        {
+        <li class="nav-item">
+        <a class="nav-link @(action == "Index" && controller == "Client" ? "active fw-bold text-uppercase" : "")" asp-area="" asp-controller="Client" asp-action="Index">
+        My Profile
+        </a>
+        </li>
+        }
+        @if (User.IsInRole("Consultant"))
+        {
+        <li class="nav-item">
+        <a class="nav-link @(action == "Index" && controller == "Consultant" ? "active fw-bold" : "")" asp-controller="Consultant" asp-action="Index">ConsultControl</a>
+        </li>
+        }
+
+        <li class="nav-item">
+        <a class="nav-link @(action == "Privacy" && controller == "Home" ? "active fw-bold" : "")" asp-controller="Home"
+        asp-action="Privacy">About Us</a>
+        </li>
+        <div>
+        @if (!User.Identity.IsAuthenticated)
+        {
+        <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Login</a>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-outline-primary">Register</a>
+        }
+        else
+        {
+        <div style="cursor: pointer;" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Hello,
+        @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu">
+        <li>
+        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+        </li>
+        </ul>
+        </div>
+        }
+        </div>
+        </ul>
+        </div>
+        </div>
+        </nav> *@
+        @* Nav2 end *@
+
+        @* Nav3 start *@
+        @* <nav class="navbar navbar-expand-lg navbar-light bg-info bg-gradient mb-2">
+        <div class="container">
+        <a class="navbar-brand" href="#">APP NAME</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mx-auto ">
+        <li class="nav-item">
+        <a class="nav-link mx-2 @(action == "Index" && controller == "Home" ? "active fw-bold" : "")" asp-action="Index" asp-controller="Home">
+        <i class="fa-solid fa-house"></i> &nbsp;&nbsp; Home
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link  @(action == "Index" && controller == "Client" ? "active fw-bold" : "")" asp-area="" asp-controller="Client" asp-action="Index">
+        <i class="fa-solid fa-file-invoice"></i> &nbsp;&nbsp; My Account
+        </a>
+        </li>
+        @if (User.IsInRole("Consultant"))
+        {
+        <li class="nav-item">
+        <a class="nav-link @(action == "Index" && controller == "Consultant" ? "active fw-bold" : "")" asp-controller="Consultant" asp-action="Index"> <i class="fa-solid fa-users-line"></i> &nbsp;&nbsp; Consultant</a>
+        </li>
+        }
+        <li class="nav-item">
+        <a class="nav-link @(action == "Privacy" && controller == "Home" ? "active fw-bold" : "")" asp-controller="Home"
+        asp-action="Privacy"><i class="fa-solid fa-headset"></i> &nbsp;&nbsp;Contact Us</a>
+        </li>
+        <div>
+        @if (!User.Identity.IsAuthenticated)
+        {
+        <a asp-action="Login" asp-controller="Account" class="btn btn-primary">
+        <i class="fa-solid fa-key"></i> &nbsp;&nbsp;Login
+        </a>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-primary-outline">Register</a>
+        }
+        else
+        {
+        <div style="cursor: pointer;" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-key"></i> &nbsp;&nbsp; Hello,
+        @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu">
+        <li>
+        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+        </li>
+        </ul>
+        </div>
+        }
+        </div>
+        </ul>
+        </div>
+        </div>
+        </nav> *@
+        @* Nav 3 end *@
+
+        @* Nav4 start *@
+        @*     <header class="p-3 text-dark bg-success border-bottom">
+        <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 ml-3 mb-lg-0 text-white text-decoration-none">
+        <i style="color:black;" class="fa-solid fa-building-columns fa-xl"></i>
+        </a>
+        <a class="navbar-brand fw-bold" href="#">&nbsp;&nbsp;&nbsp;APP NAME</a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li class="nav-item">
+        <a class="nav-link text-dark mx-2 @(action == "Index" && controller == "Home" ? "active fw-bold text-decoration-underline" : "")" asp-action="Index" asp-controller="Home">Home</a>
+        </li>
+        @if (User.IsInRole("User"))
+        {
+        <li class="nav-item">
+        <a class="nav-link text-dark  @(action == "Index" && controller == "Client" ? "active fw-bold text-decoration-underline" : "")" asp-area="" asp-controller="Client" asp-action="Index">
+        Bank Account
+        </a>
+        </li>
+        }
+        @if (User.IsInRole("Consultant"))
+        {
+        <li class="nav-item">
+        <a class="nav-link text-dark @(action == "Index" && controller == "Consultant" ? "active fw-bold text-decoration-underline" : "")" asp-controller="Consultant" asp-action="Index">Consultant Duties</a>
+        </li>
+        }
+        <li class="nav-item">
+        <a class="nav-link text-dark @(action == "Privacy" && controller == "Home" ? "active fw-bold text-decoration-underline" : "")" asp-controller="Home"
+        asp-action="Privacy">Connect With Us</a>
+        </li>
+        </ul>
+
+        <div class="text-end">
+        @if (!User.Identity.IsAuthenticated)
+        {
+        <a asp-action="Login" asp-controller="Account" class="btn btn-dark">Login</a>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-outline-dark">Register</a>
+        }
+        else
+        {
+        <div style="cursor: pointer;" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Hello,
+        @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu">
+        <li>
+        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+        </li>
+        </ul>
+        </div>
+        }
+        </div>
+        </div>
+        </div>
+        </header>  *@
+        @* Nav4 end *@
+
+
+        @* Nav5 start *@
+        @* <div>
+        <header>
+        <div class="px-3 py-2 bg-dark bg-gradient border-bottom">
+        <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+        APP NAME
+        </a>
+
+        <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+        <li>
+        <a asp-controller="Home" asp-action="Index"  class="nav-link text-white @(action == "Index" && controller == "Home" ? "active fw-bold " : "")">
+        <i class="fa-solid fa-house"></i>
+        Home
+        </a>
+        </li>
+
+        @if (User.IsInRole("User"))
+        {
+        <li>
+        <a asp-controller="Client" asp-action="Index" class="nav-link text-white @(action == "Index" && controller == "Client" ? "active fw-bold " : "")">
+        <i class="fa-solid fa-user-tie"></i>
+        Dashboard
+        </a>
+        </li>
+        }
+        @if (User.IsInRole("Consultant"))
+        {
+        <li>
+        <a asp-controller="Consultant" asp-action="Index" class="nav-link text-white @(action == "Index" && controller == "Consultant" ? "active fw-bold" : "")">
+        <i class="fa-solid fa-user-lock"></i>
+        Consultant Help
+        </a>
+        </li>
+        }
+        <li>
+        <a asp-controller="Home" asp-action="Privacy" class="nav-link text-white @(action == "Privacy" && controller == "Home" ? "active fw-bold" : "")">
+        <i class="fa-solid fa-headset"></i>
+        Contact
+        </a>
+        </li>
+        @if (!User.Identity.IsAuthenticated)
+        {
+        <li>
+        <a asp-action="Login" asp-controller="Account" class="nav-link text-white @(action == "Login" && controller == "Account" ? "active fw-bold" : "")">
+        <i class="fa-solid fa-key"></i>
+        Login
+        </a>
+        </li>
+        <li>
+        <a asp-action="Register" asp-controller="Account" class="nav-link text-white @(action == "Register" && controller == "Account" ? "active fw-bold" : "")">
+        <i class="fa-solid fa-fingerprint"></i>
+        Register
+        </a>
+        </li>
+        }
+        else
+        {
+        <li style="cursor: pointer;">
+        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-user-shield"></i>
+        Hello, @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu">
+        <li>
+        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+        </li>
+        </ul>
+        </li>
+        }
+        </ul>
+        </div>
+        </div>
+        </div>
+
+        </header>
+        </div> *@
+        @* Nav5 end *@
     </header>
     <div class="">
         <main role="main" class="pb-3">
