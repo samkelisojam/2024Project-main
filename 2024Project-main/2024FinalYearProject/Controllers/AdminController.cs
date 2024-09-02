@@ -1,28 +1,72 @@
-﻿using _2024FinalYearProject.Models.ViewModels;
-using _2024FinalYearProject.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using _2024FinalYearProject.Data.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using _2024FinalYearProject.Models;
+using _2024FinalYearProject.Models.ViewModels.Admin;
+using _2024FinalYearProject.Models.ViewModels;
 
 namespace _2024FinalYearProject.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IRepositoryWrapper wrapper;
-        private readonly UserManager<AppUser> userManager;
+        private readonly IRepositoryWrapper _wrapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AdminController(IRepositoryWrapper repositoryWrapper, UserManager<AppUser> userManager)
+        public AdminController(IRepositoryWrapper wrapper , UserManager<AppUser> userManager )
         {
-            wrapper = repositoryWrapper;
-            this.userManager = userManager;
+            _wrapper = wrapper;
+            _userManager = userManager;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var transactions = await _wrapper.Transaction.GetAllAsync();
+            var consultants =  (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+            var users =  (await _userManager.GetUsersInRoleAsync("User")).ToList();
+
+            var indexPageViewModel = new IndexPageViewModel()
+            {
+                Transactions = transactions ,
+                Consultants = consultants,
+                Users = users
+
+            };
+
+            return View(indexPageViewModel);
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Users()
         {
-            return View();
+         
+
+            var users =  await _wrapper.AppUser.GetAllUsersAndBankAccount();
+            var userPageViewModel = new UserPageViewModel()
+            {
+                AppUsers = users
+            };
+            
+            return View(userPageViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Consultants()
+        {
+
+
+            var users =( await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+
+            return View(users);
+        }
+
+        //delete transaction
+        [HttpPost]
+        public async Task<IActionResult> DeleteTransaction(int id)
+        {
+            await _wrapper.Transaction.RemoveAsync(id);
+            return RedirectToAction("Index");
         }
 
         [TempData]
@@ -34,11 +78,11 @@ namespace _2024FinalYearProject.Controllers
 
         public async Task<IActionResult> ViewAllLogins(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
-                var allLogins = await wrapper.Logins.GetAllAsync();
-                var userBankAccount = (await wrapper.BankAccount.GetAllAsync()).FirstOrDefault(bc => bc.AccountNumber == user.AccountNumber);
+                var allLogins = await _wrapper.Logins.GetAllAsync();
+                var userBankAccount = (await _wrapper.BankAccount.GetAllAsync()).FirstOrDefault(bc => bc.AccountNumber == user.AccountNumber);
                 return View(new ConsultantViewModel
                 {
                     SelectedUser = user,
@@ -49,7 +93,7 @@ namespace _2024FinalYearProject.Controllers
         }
         public async Task<IActionResult> DepositWithdraw(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user != null)
             {
@@ -67,10 +111,10 @@ namespace _2024FinalYearProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.UserEmail);
+                var user = await _userManager.FindByEmailAsync(model.UserEmail);
                 if (user != null)
                 {
-                    var AllBankAcc = await wrapper.BankAccount.GetAllAsync();
+                    var AllBankAcc = await _wrapper.BankAccount.GetAllAsync();
                     var userBankAcc = AllBankAcc.FirstOrDefault(bc => bc.UserEmail == user.Email);
                     if (userBankAcc != null)
                     {
@@ -87,7 +131,7 @@ namespace _2024FinalYearProject.Controllers
                             }
                             userBankAcc.Balance -= model.Amount;
                         }
-                        await wrapper.BankAccount.UpdateAsync(userBankAcc);
+                        await _wrapper.BankAccount.UpdateAsync(userBankAcc);
                         var transaction = new Transaction
                         {
                             Amount = model.Amount,
@@ -97,8 +141,8 @@ namespace _2024FinalYearProject.Controllers
                             BankAccountIdSender = 0,
                             TransactionDate = DateTime.Now
                         };
-                        await wrapper.Transaction.AddAsync(transaction);
-                        wrapper.SaveChanges();
+                        await _wrapper.Transaction.AddAsync(transaction);
+                        _wrapper.SaveChanges();
                         Message = $"Money Successfully {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(action)} to account";
                         return RedirectToAction("Index", "Consultant");
                     }
@@ -125,10 +169,10 @@ namespace _2024FinalYearProject.Controllers
 
         public async Task<IActionResult> ConsultantDeleteUser(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
-                var results = await userManager.DeleteAsync(user);
+                var results = await _userManager.DeleteAsync(user);
                 if (results.Succeeded)
                 {
                     return RedirectToAction("Index", "Consultant");
@@ -139,7 +183,7 @@ namespace _2024FinalYearProject.Controllers
         }
         public async Task<IActionResult> ConsultantUpdateUser(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
                 return View(new ConsultantUpdateUserModel
@@ -160,23 +204,23 @@ namespace _2024FinalYearProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
                     user.Email = model.Email;
                     user.PhoneNumber = model.PhoneNumber;
                     user.LastName = model.Lastname;
                     user.DateOfBirth = model.DateOfBirth;
-                    var result = await userManager.UpdateAsync(user);
+                    var result = await _userManager.UpdateAsync(user);
                     Message = "Updated User Details\n";
                     if (result.Succeeded)
                     {
                         if (model.Password != null && model.ConfirmPassword != null && model.Password == model.ConfirmPassword)
                         {
-                            var passResults = await userManager.RemovePasswordAsync(user);
+                            var passResults = await _userManager.RemovePasswordAsync(user);
                             if (passResults.Succeeded)
                             {
-                                if ((await userManager.AddPasswordAsync(user, model.Password)).Succeeded)
+                                if ((await _userManager.AddPasswordAsync(user, model.Password)).Succeeded)
                                 {
                                     Message += "Successfully updated password";
                                 }

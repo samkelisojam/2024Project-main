@@ -1,5 +1,5 @@
 ﻿@using _2024FinalYearProject.Models.ViewModels.Admin
-@model UserPageViewModel
+@model List<AppUser>
 @{
     ViewData["Title"] = "Edit-Profile";
 }
@@ -47,7 +47,7 @@
         <main class="content px-3 py-4">
             <div class="container-fluid">
                 <div class="mb-3">
-                    <h3 class="fw-bold fs-4 mb-3">Manage Users</h3>
+                    <h3 class="fw-bold fs-4 mb-3">Manage Consultants</h3>
                     <div class="row">
                         <div class="col-12">
                             <table class="table table-striped">
@@ -62,7 +62,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.AppUsers.Count == 0)
+                                    @if (Model.Count == 0)
                                     {
                                         <tr>
                                             <td colspan="6" class="text-center">
@@ -70,14 +70,14 @@
                                             </td>
                                         </tr>
                                     }
-                                    @foreach (var user in Model.AppUsers)
+                                    @foreach (var user in Model)
                                     {
                                         <tr>
                                             <th scope="row">1</th>
-                                            <td>@user.AppUser.FirstName</td>
-                                            <td>@user.AppUser.LastName</td>
-                                            <td>@user.AppUser.AccountNumber</td>
-                                            <td>R @user.BankAccount.Balance </td>
+                                            <td>@user.FirstName</td>
+                                            <td>@user.LastName</td>
+                                            <td>"find what "</td>
+                                            <td>"to put here" </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm">
                                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -92,12 +92,12 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div> 
-                 </div>
+                    </div>
+                </div>
             </div>
         </main>
 
-       
+
 
 
         <footer class="footer">
