@@ -1,0 +1,131 @@
+﻿<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        display: flex;
+        height: 100%;
+        position: relative;
+    }
+
+    .left-side {
+        flex: 1;
+        background: url('https://www.hippo.co.za/globalassets/images/blog/2021/january-2021/hippo-october-best-credit-cards-articles.jpg') no-repeat center center;
+        background-size: cover;
+        position: relative;
+    }
+
+        .left-side::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+        }
+
+    .left-content {
+        position: relative;
+        z-index: 1;
+        color: white;
+        padding: 40px;
+        width: 50%;
+    }
+
+    .right-side {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40%;
+        height: 100%;
+        background-color: white;
+        clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    .social-icons {
+        margin-top: 20px;
+    }
+
+        .social-icons a {
+            color: white;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+    form {
+        max-width: 300px;
+        margin-left: auto;
+    }
+
+    input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff7700;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .form-footer {
+        margin-top: 15px;
+        font-size: 0.8em;
+    }
+
+    a {
+        color: #ff7700;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+    <div class="left-side">
+        <div class="left-content">
+            <h1>Welcome<br>Back</h1>
+            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="right-side">
+        <form>
+            <h2>Sign in</h2>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <label>
+                <input type="checkbox"> Remember Me
+            </label>
+            <button type="submit">Sign in now</button>
+            <div class="form-footer">
+                <a href="#">Lost your password?</a>
+                <p>By clicking on "Sign in now" you agree to our <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+            </div>
+        </form>
+    </div>
+</div>
