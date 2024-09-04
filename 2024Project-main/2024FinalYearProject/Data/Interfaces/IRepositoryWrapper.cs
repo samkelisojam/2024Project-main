@@ -8,6 +8,7 @@
         IBankAccountRepository BankAccount { get; }
         ILoginRepository Logins { get; }
         INotificationRepository Notification { get; }
+        IUserRepository AppUser { get; }
         void SaveChanges();
     }
 }
