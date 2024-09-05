@@ -169,7 +169,7 @@ namespace _2024FinalYearProject.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ConsultantDeleteUser(string email)
+        public async Task<IActionResult> AdminDeleteUser(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
@@ -183,7 +183,7 @@ namespace _2024FinalYearProject.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> ConsultantUpdateUser(string email)
+        public async Task<IActionResult> ManageUser(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
@@ -240,7 +240,7 @@ namespace _2024FinalYearProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConsultantUpdateUser(ConsultantUpdateUserModel model)
+        public async Task<IActionResult> ManageUser(ConsultantUpdateUserModel model)
         {
             if (ModelState.IsValid)
             {

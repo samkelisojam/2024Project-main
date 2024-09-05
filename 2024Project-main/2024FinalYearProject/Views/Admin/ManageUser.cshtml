@@ -1,101 +1,60 @@
-﻿<style>
-    .sidebar {
-        height: 100vh;
-        background-color: #f8f9fa;
-    }
+﻿@model ConsultantUpdateUserModel
 
-    .profile-pic {
-        width: 100px;
-        height: 100px;
-        background-color: #6c5ce7;
-        border-radius: 50%;
-    }
-
-    .cover-img {
-        height: 200px;
-        background-color: #6c5ce7;
-    }
-</style>
-
-<div class="container-fluid">
-    <div class="row">
-        
-        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            Explore
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Stats
-                        </a>
-                    </li>
-                 
-                </ul>
+<div class="container d-flex justify-content-center">
+    <div class="col-md-6">
+        <h2>Update Profile</h2>
+        <hr />
+        <form asp-action="ManageUser" asp-controller="Admin" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email <i class="fas fa-envelope"></i></label>
+                <input asp-for="Email" readonly class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-        </div>
 
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label">Lastname <i class="fa-solid fa-id-card-clip"></i></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Welcome, Amanda</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group me-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Search</button>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label">DateOfBirth <i class="fa-solid fa-calendar-days"></i></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label">Phone Number <i class="fas fa-phone"></i></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <h5>Manage User Logins</h5>
+                <br />
+                <div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Password <i class="fa-solid fa-lock"></i></i></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="control-label">Confirm Password <i class="fa-solid fa-lock"></i></i></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-3">
-                    <h4>Settings</h4>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action active">Profile</a>
-                        <a href="#" class="list-group-item list-group-item-action">Password</a>
-                        <a href="#" class="list-group-item list-group-item-action">Notification</a>
-                        <a href="#" class="list-group-item list-group-item-action">Account Support</a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="cover-img mb-3">
-                                <button class="btn btn-light float-end">Edit Cover</button>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="profile-pic me-3"></div>
-                                <div>
-                                    <h5 class="mb-0">Your Name</h5>
-                                    <small>Update your profile</small>
-                                </div>
-                            </div>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="userName" class="form-label">User Name</label>
-                                    <input type="text" class="form-control" id="userName" placeholder="Your user name">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="fullName" class="form-label">Your Name</label>
-                                    <input type="text" class="form-control" id="fullName" placeholder="Your name">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="bio" class="form-label">Bio</label>
-                                    <textarea class="form-control" id="bio" rows="3" placeholder="Your bio"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Your email address">
-                                </div>
-                                <button type="submit" class="btn btn-info">Save</button>
-                                <button type="button" class="btn btn-light">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <input asp-for="IDNumber" class="form-control" hidden />
+            <input asp-for="Userrole" class="form-control" hidden />
+            <input asp-for="Email" class="form-control" hidden />
+
+            <div class="mt-4 form-group d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
-        </main>
+        </form>
     </div>
 </div>
