@@ -39,7 +39,6 @@ namespace _2024FinalYearProject.Controllers
             });
         }
 
-
         public async Task<IActionResult> ViewAllLogins(string email)
         {
             var user = await userManager.FindByEmailAsync(email);

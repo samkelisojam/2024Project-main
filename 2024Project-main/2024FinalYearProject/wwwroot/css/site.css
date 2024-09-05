@@ -34,7 +34,6 @@ body {
 }
 
 .card {
-    background-color: var(--accent);
     box-shadow: rgba(33, 37, 41, .1) 5px 5px initial;
     border-radius: 15px 15px;
 }

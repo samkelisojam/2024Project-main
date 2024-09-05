@@ -9,47 +9,31 @@
     }
 </style>
 
-<!-- Hero Section -->
-<div class="container-fluid hero-section text-white text-center d-flex justify-content-center align-items-center"
-     style="background-image: url('@Url.Content("~/images/bg.jpg")'); height: 60vh; background-size: cover; background-position: center;">
-    <div class="hero-content">
-        <h1 class="display-4">Welcome to Your Secure Banking Solution</h1>
-        <p class="lead">Manage your finances effortlessly with our cutting-edge online banking platform.</p>
-    </div>
-</div>
-
-<!-- Key Functionalities Section -->
-<div class="container py-5">
-    <div class="row text-center">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Apply for an Account</h5>
-                    <p class="card-text">Open an account in minutes with our simple, secure process.</p>
-                    <a href="@Url.Action("Apply", "Account")" class="btn btn-primary">Get Started</a>
-                </div>
-            </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="~/Images/back.jpg" alt="Bank Image" class="img-fluid">
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Make Payments</h5>
-                    <p class="card-text">Pay bills, transfer funds, and manage your payments easily.</p>
-                    <a href="@Url.Action("MakePayment", "Payment")" class="btn btn-primary">Make a Payment</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <i class="fas fa-exchange-alt fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Peer-to-Peer Transfer</h5>
-                    <p class="card-text">Send money instantly to friends and family with just a few clicks.</p>
-                    <a href="@Url.Action("Transfer", "Transfer")" class="btn btn-primary">Transfer Now</a>
-                </div>
-            </div>
+        <div class="col-md-7">
+            <h3>Welcome to Our Online Banking</h3>
+            <p>Discover seamless banking services, secure transactions, and personalized financial management. Get started today!</p>
+            <ul> <li><strong>Secure Account Management:</strong> <ul> <li>Create and manage your accounts securely.</li> <li>View balances, transaction history, and statements.</li> </ul> </li> <li><strong>Fund Transfers:</strong> <ul> <li>Transfer money between your own accounts.</li> <li>Send funds to other bank accounts (within the same bank or external).</li> </ul> </li> <li><strong>Bill Payments:</strong> <ul> <li>Pay utility bills, credit card bills, and other recurring payments.</li> <li>Set up automatic bill payments.</li> </ul> </li> <li><strong>Mobile Check Deposit:</strong> <ul> <li>Snap photos of checks and deposit them using the app.</li> <li>Convenient for remote check deposits.</li> </ul> </li> </ul>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("User"))
+                {
+                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Client">Get Started</a>
+                }else if (User.IsInRole("Consultant"))
+                {
+                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Consultant">Consultant Control Panel</a>
+                }else
+                {
+                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Admin">Admin Control Panel</a>
+                }
+            }else
+            {
+                <a class="btn btn-info btn-lg mt-5" asp-action="Login" asp-controller="Account">Create Your Own Account</a>
+            }
         </div>
     </div>
 </div>

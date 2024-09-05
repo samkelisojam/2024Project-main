@@ -19,6 +19,18 @@ namespace _2024FinalYearProject.Data.SeedData
             AccountNumber = "0000000001",
             UserRole = "Consultant"
         };
+        private static readonly AppUser adminUser = new AppUser
+        {
+            UserName = "def_admin",
+            FirstName = "Chuck",
+            LastName = "Norris",
+            Email = "norris@ufs.ac.za",
+            DateOfBirth = DateTime.Now,
+            IDnumber = "8876543210123",
+            StudentStaffNumber = "9876543210",
+            AccountNumber = "0000000002",
+            UserRole = "Admin"
+        };
         public static async Task EnsurePopulatedAsync(IApplicationBuilder app)
         {
             AppDbContext context = app.ApplicationServices.CreateScope()
@@ -36,22 +48,29 @@ namespace _2024FinalYearProject.Data.SeedData
                 if (await roleManager.FindByNameAsync(consultantUser.UserRole) == null)
                     await roleManager.CreateAsync(new(consultantUser.UserRole));
 
-                AppUser user = new()
-                {
-                    UserName = consultantUser.UserName,
-                    FirstName = consultantUser.FirstName,
-                    LastName = consultantUser.LastName,
-                    Email = consultantUser.Email,
-                    StudentStaffNumber = consultantUser.StudentStaffNumber,
-                    AccountNumber = consultantUser.AccountNumber,
-                    DateOfBirth = consultantUser.DateOfBirth,
-                    IDnumber = consultantUser.IDnumber,
-                    UserRole = consultantUser.UserRole,
-                };
-                IdentityResult result = await userManager.CreateAsync(user, password);
+                IdentityResult result = await CreatePreAppUser(consultantUser, userManager);
                 if (result.Succeeded)
-                    await userManager.AddToRoleAsync(user, "Consultant");
+                    await userManager.AddToRoleAsync(consultantUser, "Consultant");
+                result = await CreatePreAppUser(adminUser, userManager);
+                if (result.Succeeded)
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
             }
+        }
+        public static async Task<IdentityResult> CreatePreAppUser(AppUser user, UserManager<AppUser> userManager)
+        {
+            AppUser _user = new()
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                StudentStaffNumber = user.StudentStaffNumber,
+                AccountNumber = user.AccountNumber,
+                DateOfBirth = user.DateOfBirth,
+                IDnumber = user.IDnumber,
+                UserRole = user.UserRole,
+            };
+            return await userManager.CreateAsync(user, password);
         }
     }
 }

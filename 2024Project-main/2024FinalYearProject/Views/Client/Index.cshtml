@@ -4,48 +4,45 @@
     ViewBag.Title = "Online Banking - User View";
 }
 
-<div class="container-fluid">
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
-            <div class="user-profile text-center">
-                <img src="~/extras/whatsapp image 2024-05-05 at 14.24.54.jpeg" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
+            <div class="card p-3 shadow-sm" style="background-color: transparent !important">
+                <div class="user-profile text-center">
+                    <img src="~/Images/user-avatar.png" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
 
-                <h4 class="profile-name">@Model.Lastname</h4>
-                <p class="profile-info">ID Number: @Model.IDNumber</p>
-                <p class="profile-info">Account number: @Model.AccountNumber</p>
-                <p class="profile-info">Phone number: @Model.PhoneNumber</p>
-                <p class="profile-info">Date of Birth: @Model.DateOfBirth</p>
-                <p class="profile-info">Email: @Model.Email</p>
-                <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-primary btn-update">Update Profile</a>
+                    <h4 class="profile-name">@Model.Lastname</h4>
+                    <p class="profile-info">ID Number: @Model.IDNumber</p>
+                    <p class="profile-info">Account number: @Model.AccountNumber</p>
+                    <p class="profile-info">Phone number: @Model.PhoneNumber</p>
+                    <p class="profile-info">Date of Birth: @Model.DateOfBirth</p>
+                    <p class="profile-info">Email: @Model.Email</p>
+                    <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-info btn-update">Update Profile</a>
+                </div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col">
-                    <div class="functionality-buttons">
-                        <a asp-action="TransferMoneyview" asp-controller="Client" class="btn btn-warning btn-lg d-flex align-items-center text-dark custom-hover-2 mb-3">
-                            <i class="fas fa-credit-card mr-2"></i>
-                            Transfer Money
-                        </a>
-                        <a asp-action="ViewBankBalance" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover-5 mb-3">
-                            <i class="fas fa-file-alt mr-2"></i>
-                            View Bank Balance
-                        </a>
-                        <a asp-action="Transactions" asp-controller="Client" class="btn btn-secondary btn-lg d-flex align-items-center text-dark custom-hover-6 mb-3">
-                            <i class="fas fa-history mr-2"></i>
-                            View Previous Transactions & Print Bank Statements
-                        </a>
-                        <a asp-action="CashSent" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
-                            <i class="fas fa-money-bill-alt mr-2"></i>
-                            Varsity Cash Sent (Cardless)
-                        </a>
-
-                        <a asp-action="NotificationMessage" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
-                            <i class="fas fa-message mr-2"></i>
-                            Notifiactions
-                        </a>
-                      
-                    </div>
+                <a asp-action="TransferMoneyview" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fas fa-credit-card fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center">Transfer Money</h5>
+                </a>
+                <a asp-action="ViewBankBalance" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fas fa-file-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center">View Bank Balance</h5>
+                </a>
+                <a asp-action="Transactions" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fas fa-history fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center"> View Previous Transactions</h5>
+                </a>
+                <a asp-action="CashSent" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fas fa-money-bill-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center">Cash Send(Cardless)</h5>
+                </a>
+                <a asp-action="NotificationMessage" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info bg-gradient" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fas fa-message fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center"> Notificactions</h5>
+                </a>
             </div>
         </div>
     </div>

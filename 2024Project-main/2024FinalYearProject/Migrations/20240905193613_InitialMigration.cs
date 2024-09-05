@@ -257,9 +257,9 @@ namespace _2024FinalYearProject.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "9f4e3c72-c59a-4258-9dbc-1c16f6772975", null, "Admin", "ADMIN" },
-                    { "b9498702-003f-421c-b195-0e7f1fb6bafc", null, "User", "USER" },
-                    { "f5774db3-d5ae-4082-98e8-35f9dc3f0431", null, "Consultant", "CONSULTANT" }
+                    { "575f4db4-1b63-4e66-9dde-9e813b6593d3", null, "User", "USER" },
+                    { "58dc0fce-2f88-4d04-bd72-5a26389e8db6", null, "Consultant", "CONSULTANT" },
+                    { "9186cd62-9b95-4dae-81e2-135e48e0565c", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

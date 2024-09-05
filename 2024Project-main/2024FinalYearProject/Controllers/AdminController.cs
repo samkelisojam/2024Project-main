@@ -1,53 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using _2024FinalYearProject.Data.Interfaces;
+using _2024FinalYearProject.Models;
+using _2024FinalYearProject.Models.ViewModels;
+using _2024FinalYearProject.Models.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.Formatters.Xml;
-using _2024FinalYearProject.Data.Interfaces;
-using Microsoft.AspNetCore.Identity;
-using _2024FinalYearProject.Models;
-using _2024FinalYearProject.Models.ViewModels.Admin;
-using _2024FinalYearProject.Models.ViewModels;
 
 namespace _2024FinalYearProject.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IRepositoryWrapper _wrapper;
         private readonly UserManager<AppUser> _userManager;
 
-        public AdminController(IRepositoryWrapper wrapper , UserManager<AppUser> userManager )
+        public AdminController(IRepositoryWrapper wrapper, UserManager<AppUser> userManager)
         {
             _wrapper = wrapper;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentPage = "index")
         {
             var transactions = await _wrapper.Transaction.GetAllAsync();
-            var consultants =  (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
-            var users =  (await _userManager.GetUsersInRoleAsync("User")).ToList();
+            var consultants = (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+            var users = (await _userManager.GetUsersInRoleAsync("User")).ToList();
 
             var indexPageViewModel = new IndexPageViewModel()
             {
-                Transactions = transactions ,
+                CurrentPage = currentPage,
+                Transactions = transactions,
                 Consultants = consultants,
                 Users = users
-
             };
 
             return View(indexPageViewModel);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Users()
         {
-         
 
-            var users =  await _wrapper.AppUser.GetAllUsersAndBankAccount();
+
+            var users = await _wrapper.AppUser.GetAllUsersAndBankAccount();
             var userPageViewModel = new UserPageViewModel()
             {
                 AppUsers = users
             };
-            
+
             return View(userPageViewModel);
         }
 
@@ -56,7 +58,7 @@ namespace _2024FinalYearProject.Controllers
         {
 
 
-            var users =( await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+            var users = (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
 
             return View(users);
         }
@@ -72,8 +74,8 @@ namespace _2024FinalYearProject.Controllers
         [TempData]
         public string Message { get; set; }
 
-       
-       
+
+
 
 
         public async Task<IActionResult> ViewAllLogins(string email)
@@ -199,6 +201,44 @@ namespace _2024FinalYearProject.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GenerateReport()
+        {
+            try
+            {
+                List<string> data = new List<string>();
+                var reportContent = $"Banking Application\n{DateTime.Now:yyyyMMddHHmmss}\n\n" +
+                    $"***Users\\Clients***\n" +
+                    $"=====================\n" +
+                    $"Account No\tFirst Name\tLast Name\tEmail Address\tStudent Number\n\n";
+                var report = _userManager.Users;
+                foreach (var u in report)
+                {
+                    if (await _userManager.IsInRoleAsync(u, "User"))
+                    {
+                        data.Add($"{u.AccountNumber}\t{u.FirstName}\t{u.LastName}\t{u.Email}\t{u.StudentStaffNumber}\n");
+                    }
+                }
+                reportContent += string.Join('\n', data.ToArray());
+
+
+                reportContent += $"\n***All Transactions***\n" +
+                                 $"==========================\n" +
+                    $"Account No\tFirst Name\tLast Name\tEmail Address\tStudent Number\n\n";
+                var transactions = await _wrapper.Transaction.GetAllAsync();
+                reportContent += string.Join('\n', transactions.Select(u => $"{u.UserEmail}\t{u.Amount}\t{u.BankAccountIdReceiver}\t{u.BankAccountIdSender}\n").ToArray());
+
+                var contentBytes = Encoding.UTF8.GetBytes(reportContent);
+                var fileName = $"Report_{DateTime.Now:yyyyMMddHHmmss}.txt";
+
+                return File(contentBytes, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error generating report: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> ConsultantUpdateUser(ConsultantUpdateUserModel model)
         {
@@ -249,9 +289,5 @@ namespace _2024FinalYearProject.Controllers
             }
             return View(model);
         }
-
-
-       
-
     }
 }
