@@ -1,0 +1,53 @@
+﻿@model AdvisorViewModel
+
+<div class="container mt-4">
+    <h3>Welcome to @Model.CurrentUser.FirstName @Model.CurrentUser.LastName profile</h3>
+    <h4 class="text-muted">Current Balance: @Model.CurrentUserBankAccount.Balance</h4>
+    <h4 class="text-muted">Account Number: @Model.CurrentUserBankAccount.AccountNumber</h4>
+    <br />
+    <hr/>
+    <h3>Transactions</h3>
+    @if (Model.Transactions.Count() > 0)
+    {
+        <table class="table table-striped-columns table-info">
+            <thead>
+                <tr>
+                    <th scope="col">Reference</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Receiver Acc. No.</th>
+                    <th scope="col">Sender Acc. No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in Model.Transactions)
+                {
+                    <tr>
+                        <th scope="row">@transaction.Reference &nbsp;<span class="badge bg-success">Active</span></th>
+                        <td>@(transaction.Amount)</td>
+                        <td>@transaction.TransactionDate</td>
+                        <td>@transaction.UserEmail</td>
+                        <td>@transaction.BankAccountIdReceiver</td>
+                        <td>@transaction.BankAccountIdSender</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>No Transactions found</h1>
+    }
+
+    <form method="post" asp-action="Advice" asp-controller="FinAdvisor">
+        <input type="email" class="form-control" hidden asp-for="@Model.UserEmail">
+        <div class="mb-3">
+            <label for="advicetxt" class="form-label">Please type in Advice: </label>
+            <textarea asp-for="@Model.Advise" class="form-control" id="advicetxt" rows="5"></textarea>
+        </div>
+        <button class="btn btn-info btn-lg" type="submit">Send Advice</button>
+        <a asp-action="Index" asp-controller="FinAdvisor" class="btn btn-outline-info btn-lg">Go back</a>
+    </form>
+
+</div>

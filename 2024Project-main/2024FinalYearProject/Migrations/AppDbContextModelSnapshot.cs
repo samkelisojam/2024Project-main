@@ -51,21 +51,27 @@ namespace _2024FinalYearProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9186cd62-9b95-4dae-81e2-135e48e0565c",
+                            Id = "0c5dc544-593d-42bb-a5fa-f34ffba14079",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "575f4db4-1b63-4e66-9dde-9e813b6593d3",
+                            Id = "92aedafa-dd8f-46f7-81ee-117391eaad0a",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "58dc0fce-2f88-4d04-bd72-5a26389e8db6",
+                            Id = "fd18dde1-c94f-44b3-9b82-b79923a10876",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
+                        },
+                        new
+                        {
+                            Id = "b2156bf8-c977-4ba3-99f3-776844af584b",
+                            Name = "FinAdvisor",
+                            NormalizedName = "FINADVISOR"
                         });
                 });
 

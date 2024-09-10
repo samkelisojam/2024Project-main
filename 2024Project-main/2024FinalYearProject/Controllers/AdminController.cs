@@ -25,12 +25,14 @@ namespace _2024FinalYearProject.Controllers
         {
             var transactions = await _wrapper.Transaction.GetAllAsync();
             var consultants = (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
+            var finadvisors = (await _userManager.GetUsersInRoleAsync("FinAdvisor")).ToList();
             var users = (await _userManager.GetUsersInRoleAsync("User")).ToList();
 
             var indexPageViewModel = new IndexPageViewModel()
             {
                 CurrentPage = currentPage,
                 Transactions = transactions,
+                FinAdvisor = finadvisors,
                 Consultants = consultants,
                 Users = users
             };
@@ -56,11 +58,30 @@ namespace _2024FinalYearProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Consultants()
         {
-
-
             var users = (await _userManager.GetUsersInRoleAsync("Consultant")).ToList();
-
             return View(users);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> AssignRole(string role, string email)
+        {
+            if (role != null && email != null)
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (await _userManager.IsInRoleAsync(user, "User"))
+                    await _userManager.RemoveFromRoleAsync(user, "User");
+
+                string Role = (role == "c") ? "Consultant" : "FinAdvisor";
+                var result = await _userManager.AddToRoleAsync(user, Role);
+                if (result.Succeeded)
+                {
+                    Message = $"User successfully assigned to {Role}";
+                    return RedirectToAction("Index", "Admin");
+                }
+            }
+            Message = $"Failed to assign user to role";
+            return RedirectToAction("Index", "Admin");
         }
 
         //delete transaction
@@ -74,10 +95,7 @@ namespace _2024FinalYearProject.Controllers
         [TempData]
         public string Message { get; set; }
 
-
-
-
-
+        [HttpGet]
         public async Task<IActionResult> ViewAllLogins(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

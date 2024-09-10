@@ -17,11 +17,10 @@ namespace _2024FinalYearProject.Controllers
             _repo = repo;
             _userManager = userManager;
         }
-
+        [TempData]
+        public string Message { get; set; }
         public async Task<IActionResult> IndexAsync()
         {
-
-
             var username = User.Identity.Name;
 
             var user = await _userManager.FindByNameAsync(username);
@@ -40,7 +39,6 @@ namespace _2024FinalYearProject.Controllers
 
         }
 
-        // Get Notification
         public async Task<IActionResult> NotificationMessage()
         {
             var username = User.Identity.Name;
@@ -189,21 +187,27 @@ namespace _2024FinalYearProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRatingAsync(FeedBack feedback)
+        public async Task<IActionResult> AddRating(FeedBack feedback)
         {
-            if (ModelState.IsValid)
+            var currentLoginUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (User != null)
             {
-                await _repo.Review.AddAsync(feedback);
-                return RedirectToAction("Index", "Client");
+                feedback.UserEmail = currentLoginUser.Email;
+                feedback.dateTime = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    await _repo.Review.AddAsync(feedback);
+                    Message = "Review sent successfully";
+                    return RedirectToAction("Index", "Client");
+                }
             }
+            Message = "There was an error sending the review";
             return View(feedback);
         }
-
 
         public async Task<IActionResult> ViewBankBalance()
         {
             var username = User.Identity.Name;
-
             var user = await _userManager.FindByNameAsync(username);
             var allBankAccount = await _repo.BankAccount.GetAllAsync();
             var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
@@ -213,7 +217,6 @@ namespace _2024FinalYearProject.Controllers
                 Balance = bankAccount.Balance,
 
             };
-
             return View(viewModel);
         }
 
@@ -224,7 +227,7 @@ namespace _2024FinalYearProject.Controllers
 
         public async Task<bool> TransferMoney(string senderAccountNumber, string receiverAccountNumber, decimal amount)
         {
-            
+
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
 
             // Find sender and receiver bank accounts
@@ -251,7 +254,7 @@ namespace _2024FinalYearProject.Controllers
             await _repo.BankAccount.UpdateAsync(senderBankAccount);
             await _repo.BankAccount.UpdateAsync(receiverBankAccount);
 
-          
+
             var senderNotification = new Notification
             {
                 Message = $"You have sent {amount:C} to account {receiverBankAccount.AccountNumber}.",
@@ -318,8 +321,8 @@ namespace _2024FinalYearProject.Controllers
             }
             else
             {
-                      return View("NotFound");
-                
+                return View("NotFound");
+
             }
         }
 

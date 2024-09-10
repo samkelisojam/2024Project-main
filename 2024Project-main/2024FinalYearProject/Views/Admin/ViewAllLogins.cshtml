@@ -1,0 +1,28 @@
+﻿@model ConsultantViewModel
+
+<div class="container">
+    <h3>User Login Sessions - @Model.SelectedUser.Email</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Account No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Id Number</th>
+                <th scope="col">Recent Login</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var login in Model.loginSessions)
+            {
+                <tr>
+                    <th scope="row">@Model.SelectedUser.AccountNumber</th>
+                    <td>@(Model.SelectedUser.FirstName + " " + Model.SelectedUser.LastName)</td>
+                    <td>@Model.SelectedUser.Email</td>
+                    <td>@Model.SelectedUser.IDnumber</td>
+                    <td>@login.TimeStamp</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

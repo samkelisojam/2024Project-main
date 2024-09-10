@@ -23,12 +23,18 @@
                 @if (User.IsInRole("User"))
                 {
                     <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Client">Get Started</a>
-                }else if (User.IsInRole("Consultant"))
+                }
+                else if (User.IsInRole("Consultant"))
                 {
                     <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Consultant">Consultant Control Panel</a>
-                }else
+                }
+                else if (User.IsInRole("Admin"))
                 {
                     <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Admin">Admin Control Panel</a>
+                }
+                else
+                {
+                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="FinAdvisor">Financial Advisor Control Panel</a>
                 }
             }else
             {

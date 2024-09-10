@@ -46,6 +46,12 @@
                                 <a class="nav-link @(action == "Index" && controller == "Consultant" ? "active fw-bold" : "")" asp-controller="Consultant" asp-action="Index"> <i class="fa-solid fa-users-line"></i> &nbsp;&nbsp; Consultant</a>
                             </li>
                         }
+                        @if (User.IsInRole("FinAdvisor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(action == "Index" && controller == "FinAdvisor" ? "active fw-bold" : "")" asp-controller="FinAdvisor" asp-action="Index"> <i class="fa-solid fa-users-line"></i> &nbsp;&nbsp; Financial Advisor</a>
+                            </li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -99,6 +105,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    </script>
+  
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

@@ -1,0 +1,49 @@
+﻿@model ConsultantViewModel
+
+<div class="container mt-4">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+            @TempData["Message"]
+        </div>
+    }
+    <h3 class="mb-5">Financial Advisor Control Panel</h3>
+    <div>
+        <h3>Clients</h3>
+        @if (Model.appUsers.Count() > 0)
+        {
+            <table class="table table-striped-columns table-info">
+                <thead>
+                    <tr>
+                        <th scope="col">Account No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Student/Staff No.</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.appUsers)
+                    {
+                        <tr>
+                            <th scope="row">@user.AccountNumber &nbsp;<span class="badge bg-success">Active</span></th>
+                            <td>@(user.FirstName + " " + user.LastName)</td>
+                            <td>@user.Email</td>
+                            <td>@user.StudentStaffNumber</td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Advice" asp-controller="FinAdvisor" asp-route-email="@user.Email">
+                                    <i class="fa-solid fa-comments"></i> Advice Client
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h1>No users found</h1>
+        }
+    </div>
+</div>

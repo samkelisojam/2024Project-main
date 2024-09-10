@@ -5,6 +5,13 @@
 }
 
 <div class="container mt-5">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+            @TempData["Message"]
+        </div>
+    }
     <div class="row">
         <div class="col-md-3">
             <div class="card p-3 shadow-sm" style="background-color: transparent !important">
@@ -42,6 +49,10 @@
                 <a asp-action="NotificationMessage" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info bg-gradient" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
                     <i class="fas fa-message fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center"> Notificactions</h5>
+                </a>
+                <a asp-action="AddRating" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info bg-gradient" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                    <i class="fa-solid fa-star-half-stroke  fa-2xl mr-2 text-center mt-5 mb-2"></i>
+                    <h5 class="mt-5 text-center"> Review</h5>
                 </a>
             </div>
         </div>

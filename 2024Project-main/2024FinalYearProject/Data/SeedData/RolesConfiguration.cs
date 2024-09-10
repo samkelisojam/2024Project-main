@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace _2024FinalYearProject.Data.SeedData
 {
@@ -23,6 +23,11 @@ namespace _2024FinalYearProject.Data.SeedData
                 {
                     Name = "Consultant",
                     NormalizedName = "CONSULTANT"
+                },
+                new IdentityRole
+                {
+                    Name = "FinAdvisor",
+                    NormalizedName = "FINADVISOR"
                 }
             );
         }
