@@ -66,7 +66,7 @@ namespace _2024FinalYearProject.Controllers
             {
                 var notify = new Notification
                 {
-                    Message = model.Advise,
+                    Message = "[ADVICE]" + " " + model.Advise,
                     UserEmail = model.UserEmail,
                     NotificationDate = DateTime.Now,
                     IsRead = false

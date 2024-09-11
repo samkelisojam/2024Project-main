@@ -54,6 +54,12 @@ namespace _2024FinalYearProject.Controllers
             }
             return View("Index");
         }
+        [HttpGet]
+        public async Task<IActionResult> ViewReviews()
+        {
+            var allReviews = await wrapper.Review.GetAllAsync();
+            return View(allReviews);
+        }
         public async Task<IActionResult> DepositWithdraw(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -122,12 +128,6 @@ namespace _2024FinalYearProject.Controllers
                 }
             }
             return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult ChangePassword()
-        {
-            return View();
         }
 
         public async Task<IActionResult> ConsultantDeleteUser(string email)

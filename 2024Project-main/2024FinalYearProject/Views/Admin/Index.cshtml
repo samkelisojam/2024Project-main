@@ -59,7 +59,7 @@
                                     {
                                         <td>
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                Assign User To Role
+                                                Assign Role
                                             </button>
                                             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -71,9 +71,9 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <a asp-action="AssignRole" asp-route-role="c" asp-route-email="@user.Email" asp-controller="Admin" id="cons" class="btn btn-danger">Consultant</a>
+                                                            <a asp-action="AssignRole" asp-route-role="c" asp-route-email="@user.Email" asp-controller="Admin" id="cons" class="btn btn-danger m-3">Consultant</a>
                                                             <br />
-                                                            <a asp-action="AssignRole" asp-route-role="f" asp-route-email="@user.Email" asp-controller="Admin" class="btn btn-danger">Finacial Advisor</a>
+                                                            <a asp-action="AssignRole" asp-route-role="f" asp-route-email="@user.Email" asp-controller="Admin" class="btn btn-danger m-3">Finacial Advisor</a>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -130,7 +130,7 @@
                             @foreach (var transaction in Model.Transactions)
                             {
                                 <tr>
-                                    <th scope="row">@transaction.Reference &nbsp;<span class="badge bg-success">Active</span></th>
+                                    <th scope="row">@transaction.Reference</th>
                                     <td>@(transaction.Amount)</td>
                                     <td>@transaction.TransactionDate</td>
                                     <td>@transaction.UserEmail</td>

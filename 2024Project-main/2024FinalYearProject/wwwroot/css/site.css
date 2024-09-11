@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=KoHo:700|KoHo:400');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
+    html {
+    font-size: 14px;
   }
 }
 
@@ -27,8 +28,8 @@ li {
 }
 
 body {
-    font-family: 'KoHo';
-    font-weight: 400;
+    font-family: 'Roboto';
+    font-weight: 300;
     margin-bottom: 60px;
     background-color: var(--background);
 }
@@ -39,7 +40,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: 'KoHo';
+    font-family: 'Roboto';
     font-weight: 700;
     color: var(--text);
 }
@@ -191,10 +192,10 @@ a.sidebar-link:hover {
     min-width: 200px;
 }
 
+.test{
+    transition: ease-in .2s all;
+}
 
-
-
-
-
-@media (min-width: 768px) {
+.test:hover{
+    transform: rotateZ(2deg);
 }

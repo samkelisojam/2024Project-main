@@ -19,38 +19,42 @@
                     <img src="~/Images/user-avatar.png" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
 
                     <h4 class="profile-name">@Model.Lastname</h4>
-                    <p class="profile-info">ID Number: @Model.IDNumber</p>
-                    <p class="profile-info">Account number: @Model.AccountNumber</p>
-                    <p class="profile-info">Phone number: @Model.PhoneNumber</p>
-                    <p class="profile-info">Date of Birth: @Model.DateOfBirth</p>
-                    <p class="profile-info">Email: @Model.Email</p>
+                    <p class="profile-info"><strong>Account number:</strong> @Model.AccountNumber</p>
+                    <p class="profile-info"><strong>ID Number:</strong> @Model.IDNumber</p>
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <p class="profile-info">
+                            <strong>Phone number:</strong> @Model.PhoneNumber
+                        </p>
+                    }
+                    <p class="profile-info"><strong>Email:</strong> @Model.Email</p>
                     <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-info btn-update">Update Profile</a>
                 </div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="row">
-                <a asp-action="TransferMoneyview" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="TransferMoneyview" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important;height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fas fa-credit-card fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center">Transfer Money</h5>
                 </a>
-                <a asp-action="ViewBankBalance" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="ViewBankBalance" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fas fa-file-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center">View Bank Balance</h5>
                 </a>
-                <a asp-action="Transactions" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="Transactions" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fas fa-history fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center"> View Previous Transactions</h5>
                 </a>
-                <a asp-action="CashSent" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="CashSent" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important;height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fas fa-money-bill-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center">Cash Send(Cardless)</h5>
                 </a>
-                <a asp-action="NotificationMessage" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info bg-gradient" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="NotificationMessage" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fas fa-message fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center"> Notificactions</h5>
                 </a>
-                <a asp-action="AddRating" asp-controller="Client" class="col-3 card p-3 shadow-sm m-2 text-bg-info bg-gradient" style="background-color: transparent !important; height: 200px !important; text-decoration: none;">
+                <a asp-action="AddRating" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
                     <i class="fa-solid fa-star-half-stroke  fa-2xl mr-2 text-center mt-5 mb-2"></i>
                     <h5 class="mt-5 text-center"> Review</h5>
                 </a>
@@ -58,5 +62,3 @@
         </div>
     </div>
 </div>
-
-<!-- Any additional scripts can go here -->

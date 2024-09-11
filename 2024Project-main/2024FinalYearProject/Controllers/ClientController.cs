@@ -28,12 +28,10 @@ namespace _2024FinalYearProject.Controllers
             {
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-
+                AccountNumber = user.AccountNumber,
                 IDNumber = user.IDnumber,
-
                 Userrole = user.UserRole,
                 Lastname = user.LastName + " " + user.FirstName,
-
             };
             return View(model);
 
@@ -97,7 +95,6 @@ namespace _2024FinalYearProject.Controllers
             if (bankAccount == null)
             {
                 return View("NotFound");
-
             }
 
             var model = new CashSentViewModel
@@ -127,25 +124,20 @@ namespace _2024FinalYearProject.Controllers
 
             bankAccount.Balance -= model.Amount;
 
-            // Generate Cash Sent details
             var transaction = new Transaction
             {
                 BankAccountIdSender = bankAccount.Id,
-                BankAccountIdReceiver = 0, // Assuming 0 for cashless transactions
+                BankAccountIdReceiver = 0,
                 Amount = model.Amount,
                 TransactionDate = DateTime.Now,
                 UserEmail = user.Email,
                 Reference = "CashSent",
             };
 
-            // Generate random Cash Digit and PIN
             var cashDigit = GenerateRandomNumber(13);
             var pinNumber = GenerateRandomNumber(4);
 
-            // Save the transaction
             await _repo.Transaction.AddAsync(transaction);
-
-            // Create a notification for Cash Sent
             var notification = new Notification
             {
                 Message = $"You have successfully sent cash. Amount: {model.Amount:C}.",
@@ -158,8 +150,6 @@ namespace _2024FinalYearProject.Controllers
             return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
         }
 
-
-
         public IActionResult CashSentSuccess(string cashDigit, string pinNumber, DateTime transactionDate)
         {
             ViewBag.CashDigit = cashDigit;
@@ -167,7 +157,6 @@ namespace _2024FinalYearProject.Controllers
             ViewBag.TransactionDate = transactionDate;
             return View();
         }
-
 
         private string GenerateRandomNumber(int length)
         {
@@ -220,21 +209,14 @@ namespace _2024FinalYearProject.Controllers
             return View(viewModel);
         }
 
-
-
-
-
-
         public async Task<bool> TransferMoney(string senderAccountNumber, string receiverAccountNumber, decimal amount)
         {
 
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
 
-            // Find sender and receiver bank accounts
             var senderBankAccount = allBankAccounts.FirstOrDefault(b => b.AccountNumber == senderAccountNumber);
             var receiverBankAccount = allBankAccounts.FirstOrDefault(b => b.AccountNumber == receiverAccountNumber);
 
-            // Check if both accounts exist
             if (senderBankAccount == null || receiverBankAccount == null)
             {
                 return false;
@@ -243,7 +225,7 @@ namespace _2024FinalYearProject.Controllers
 
             if (senderBankAccount.Balance < amount)
             {
-                return false; // Insufficient balance
+                return false;
             }
 
 
@@ -272,9 +254,6 @@ namespace _2024FinalYearProject.Controllers
 
             await _repo.Notification.AddAsync(senderNotification);
             await _repo.Notification.AddAsync(receiverNotification);
-
-
-
             return true;
         }
 
@@ -284,10 +263,8 @@ namespace _2024FinalYearProject.Controllers
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
 
-
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
             var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
-
 
             var viewModel = new MoneyTransferViewModel
             {
@@ -303,8 +280,6 @@ namespace _2024FinalYearProject.Controllers
         {
             var username = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
-
-            // Get all bank accounts for the user
             var allBankAccounts = await _repo.BankAccount.GetAllAsync();
             var mainBankAccount = allBankAccounts.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
 
@@ -325,8 +300,6 @@ namespace _2024FinalYearProject.Controllers
 
             }
         }
-
-
         public IActionResult TransferSuccess(decimal amount, string receiverAccount)
         {
             var model = new TransferSuccessViewModel
@@ -336,12 +309,5 @@ namespace _2024FinalYearProject.Controllers
             };
             return View(model);
         }
-
-
-
-
-
-
     }
-
 }

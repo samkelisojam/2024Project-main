@@ -1,0 +1,30 @@
+﻿@model IEnumerable<FeedBack>
+
+<div class="container">
+    <h3>All Client Review(s)</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Email</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Date</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rev in Model)
+            {
+                <tr>
+                    <th scope="row">@rev.UserEmail</th>
+                    <td>@rev.Comment</td>
+                    <td>@rev.dateTime.ToShortDateString()</td>
+                    <td><strong>@rev.Rate</strong> out of 5</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mb-3">
+        <a asp-action="Index" asp-controller="Consultant" class="btn btn-info">Go back</a>
+    </div>
+</div>
