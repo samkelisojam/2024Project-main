@@ -23,6 +23,8 @@
                    asp-controller="Admin" asp-route-currentPage="finadvisor">View Finacial Advisors</a>
                 <a class="list-group-item list-group-item-info list-group-item-action @(Model.CurrentPage == "transactions" ? "active" : "")" asp-action="Index"
                    asp-controller="Admin" asp-route-currentPage="transactions">View All Transactions</a>
+                <a class="list-group-item list-group-item-info list-group-item-action" asp-action="ViewAdvices"
+                   asp-controller="Admin">View FA Advice</a>
                 <a class="list-group-item list-group-item-info list-group-item-action" asp-action="GenerateReport"
                    asp-controller="Admin">Generate Report</a>
             </div>

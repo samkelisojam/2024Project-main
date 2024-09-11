@@ -62,6 +62,12 @@ namespace _2024FinalYearProject.Controllers
             return View(users);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ViewAdvices()
+        {
+            var allAdvices = await _wrapper.Notification.GetAllAsync();
+            return View(allAdvices.Where(n => n.Message.StartsWith("[ADVICE]")));
+        }
 
         [HttpGet]
         public async Task<IActionResult> AssignRole(string role, string email)
