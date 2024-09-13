@@ -266,7 +266,16 @@ namespace _2024FinalYearProject.Controllers
                 IsRead = false,
                 UserEmail = receiverBankAccount.UserEmail
             };
-
+            var transaction = new Transaction
+            {
+                BankAccountIdSender = senderBankAccount.Id,
+                BankAccountIdReceiver = receiverBankAccount.Id,
+                Amount = amount,
+                TransactionDate = DateTime.UtcNow,
+                Reference = $"Transfer to {receiverBankAccount.AccountNumber}",
+                UserEmail = senderBankAccount.UserEmail
+            };
+            await _repo.Transaction.AddAsync(transaction);
             await _repo.Notification.AddAsync(senderNotification);
             await _repo.Notification.AddAsync(receiverNotification);
 

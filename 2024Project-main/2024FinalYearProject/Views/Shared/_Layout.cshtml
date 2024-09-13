@@ -51,16 +51,7 @@
                                     <i class="fas fa-user"></i> User Dashboard
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Transfer", "Client")">
-                                    <i class="fas fa-money-bill-wave"></i> Transfer Money
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Transaction", "Client")">
-                                    <i class="fas fa-history"></i> Transactions
-                                </a>
-                            </li>
+                           
                         }
                         @if (User.IsInRole("Admin"))
                         {
