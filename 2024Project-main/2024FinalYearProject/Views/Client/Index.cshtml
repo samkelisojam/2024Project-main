@@ -4,51 +4,111 @@
     ViewBag.Title = "Online Banking - User View";
 }
 
+<!-- Include Bootstrap, Font Awesome, and jQuery -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .sidebar {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        background-color: #343a40;
+        padding-top: 20px;
+    }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-align: left;
+            color: white;
+            display: block;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+            .sidebar a:hover {
+                background-color: #007bff;
+                color: white;
+            }
+
+        .sidebar .active {
+            background-color: #007bff;
+            color: white;
+        }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .user-profile {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-icon {
+        font-size: 80px;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .profile-info {
+        margin: 10px 0;
+    }
+
+    .btn-update {
+        margin-top: 20px;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3">
-            <div class="user-profile text-center">
-                <img src="~/extras/whatsapp image 2024-05-05 at 14.24.54.jpeg" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
+        <!-- Sidebar -->
+        <nav class="col-md-3 sidebar">
+            <a href="#" class="active">
+                <i class="fas fa-user mr-2"></i> Profile
+            </a>
+            <a asp-action="TransferMoneyview" asp-controller="Client">
+                <i class="fas fa-credit-card mr-2"></i> Transfer Money
+            </a>
+            <a asp-action="ViewBankBalance" asp-controller="Client">
+                <i class="fas fa-wallet mr-2"></i> View Bank Balance
+            </a>
+            <a asp-action="Transactions" asp-controller="Client">
+                <i class="fas fa-history mr-2"></i> Previous Transactions
+            </a>
+            <a asp-action="CashSent" asp-controller="Client">
+                <i class="fas fa-money-bill-alt mr-2"></i> Varsity Cash Sent
+            </a>
+            <a asp-action="NotificationMessage" asp-controller="Client">
+                <i class="fas fa-bell mr-2"></i> Notifications
+            </a>
+        </nav>
 
+        <!-- Main content (user profile on the right) -->
+        <div class="col-md-9 main-content d-flex justify-content-center align-items-center">
+            <div class="user-profile text-center">
+                <!-- User icon instead of image -->
+                <i class="fas fa-user-circle profile-icon"></i>
+
+                <!-- User information -->
                 <h4 class="profile-name">@Model.Lastname</h4>
                 <p class="profile-info">ID Number: @Model.IDNumber</p>
                 <p class="profile-info">Account number: @Model.AccountNumber</p>
                 <p class="profile-info">Phone number: @Model.PhoneNumber</p>
                 <p class="profile-info">Date of Birth: @Model.DateOfBirth</p>
                 <p class="profile-info">Email: @Model.Email</p>
-                <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-primary btn-update">Update Profile</a>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col">
-                    <div class="functionality-buttons">
-                        <a asp-action="TransferMoneyview" asp-controller="Client" class="btn btn-warning btn-lg d-flex align-items-center text-dark custom-hover-2 mb-3">
-                            <i class="fas fa-credit-card mr-2"></i>
-                            Transfer Money
-                        </a>
-                        <a asp-action="ViewBankBalance" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover-5 mb-3">
-                            <i class="fas fa-file-alt mr-2"></i>
-                            View Bank Balance
-                        </a>
-                        <a asp-action="Transactions" asp-controller="Client" class="btn btn-secondary btn-lg d-flex align-items-center text-dark custom-hover-6 mb-3">
-                            <i class="fas fa-history mr-2"></i>
-                            View Previous Transactions & Print Bank Statements
-                        </a>
-                        <a asp-action="CashSent" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
-                            <i class="fas fa-money-bill-alt mr-2"></i>
-                            Varsity Cash Sent (Cardless)
-                        </a>
 
-                        <a asp-action="NotificationMessage" asp-controller="Client" class="btn btn-success btn-lg d-flex align-items-center text-dark custom-hover mb-3">
-                            <i class="fas fa-message mr-2"></i>
-                            Notifiactions
-                        </a>
-                      
-                    </div>
+                <!-- Update Profile button -->
+                <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-primary btn-update">Update Profile</a>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Any additional scripts can go here -->
