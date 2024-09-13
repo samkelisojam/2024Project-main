@@ -14,54 +14,89 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">_2024FinalYearProject</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-project-diagram"></i> Bafundi University Bank
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home"></i> Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fas fa-shield-alt"></i> Privacy
+                            </a>
                         </li>
 
-                     
                         @if (User.IsInRole("Consultant"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Consultant" asp-action="Index">Consultant Panel</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("User")  )
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">
-                                    User
-                                    -Dashboard
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Consultant" asp-action="Index">
+                                    <i class="fas fa-user-tie"></i> Consultant Panel
                                 </a>
                             </li>
                         }
-                        
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">
+                                    <i class="fas fa-user"></i> User Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Transfer", "Client")">
+                                    <i class="fas fa-money-bill-wave"></i> Transfer Money
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Transaction", "Client")">
+                                    <i class="fas fa-history"></i> Transactions
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">
+                                    <i class="fas fa-cogs"></i> Admin Dashboard
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <div>
                         @if (!User.Identity.IsAuthenticated)
                         {
-                            <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Login</a>
-                            <a asp-action="Register" asp-controller="Account" class="btn btn-primary-outline">Register</a>
+                            <a asp-action="Login" asp-controller="Account" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                            <a asp-action="Register" asp-controller="Account" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus"></i> Register
+                            </a>
                         }
                         else
                         {
-                            <div style="cursor: pointer;" class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Hello,
-                                    @User.Identity.Name</a>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> Hello, @User.Identity.Name
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
+                                    <li>
+                                        <a asp-action="Logout" asp-controller="Account" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="UpdateProfile" asp-controller="Client" class="dropdown-item">
+                                            <i class="fas fa-user-edit"></i> Update Profile
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

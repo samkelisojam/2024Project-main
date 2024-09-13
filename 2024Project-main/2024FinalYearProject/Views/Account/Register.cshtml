@@ -3,84 +3,116 @@
     ViewBag.Title = "Register";
 }
 
-<div class="d-flex justify-content-center align-items-center p-4" style="min-height: 100vh;">
-    <div class="card">
-        <div>
-            <div class="ps-4 pe-4 pt-4">
-                <h2 class="display-6 text-dark text-center ps-4 pe-4">
-                    Hello, create an account
-                </h2>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row card shadow-lg w-100 rounded-lg">
+        <!-- Left Column: Image or Background -->
+        <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center bg-primary text-white rounded-left">
+            <div class="text-center">
+                <h2 class="display-4">Welcome!</h2>
+                <p class="lead">Join us and become part of our community.</p>
+                <img src="~/images/new-background-image.jpg" alt="Background Image" class="img-fluid rounded-circle" style="width: 80%; max-width: 400px;" />
             </div>
         </div>
 
-        <div class="text-danger mt-3" asp-validation-summary="All"></div>
+        <!-- Right Column: Registration Form -->
+        <div class="col-md-6 p-4 bg-light rounded-right">
 
-        <div class="ps-5">
-            <div class="btn-group">
 
-                <a asp-controller="Account" asp-action="Register" asp-route-registerAs="student" class="btn btn-primary
-                  @(Model.RegisterAs == "student" ? "active" : "")">Student</a>
-
-                <a asp-controller="Account" asp-action="Register" asp-route-registerAs="staff" class="btn btn-primary
-                  @(Model.RegisterAs == "staff" ? "active" : "")">Staff</a>
-
+            <div class="btn-group btn-group-toggle mb-4" data-toggle="buttons">
+                <label class="btn btn-outline-primary active">
+                    <input type="radio" name="registerAs" id="student" value="student" checked> Student
+                </label>
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="registerAs" id="staff" value="staff"> Staff
+                </label>
             </div>
-        </div>
 
-        <div class="m-5">
+            <div class="text-danger mb-3" asp-validation-summary="All"></div>
+
             <form asp-action="Register" asp-controller="Account" method="post">
                 <input type="hidden" asp-for="RegisterAs" />
 
-                <div class="form-group mb-3">
-                    <div class="d-flex justify-content-between">
-                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="EmailAddress"></label>
-                        <small class="text-muted">Email address must be unique</small>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="EmailAddress">
+                                <i class="fa fa-envelope"></i> Email Address
+                            </label>
+                            <input class="form-control" asp-for="EmailAddress" autocomplete="off" placeholder="Enter your email" />
+                            <small class="form-text text-muted">Your email must be unique.</small>
+                        </div>
                     </div>
-                    <input class="form-control" asp-for="EmailAddress" autocomplete="off" />
+
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="StudentStaffNumber">
+                                <i class="fa fa-user-tag"></i> Student/Staff Number
+                            </label>
+                            <input class="form-control" asp-for="StudentStaffNumber" autocomplete="off" placeholder="Enter your number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="FirstName">
+                                <i class="fa fa-id-badge"></i> First Name
+                            </label>
+                            <input class="form-control" asp-for="FirstName" autocomplete="off" placeholder="Enter your first name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="Password">
+                                <i class="fa fa-key"></i> Password
+                            </label>
+                            <input class="form-control" asp-for="Password" type="password" autocomplete="off" placeholder="Enter your password" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="IdPassportNumber">
+                                <i class="fa fa-id-card-alt"></i> ID/Passport Number
+                            </label>
+                            <input class="form-control" asp-for="IdPassportNumber" autocomplete="off" placeholder="Enter your ID/Passport number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="LastName">
+                                <i class="fa fa-user"></i> Last Name
+                            </label>
+                            <input class="form-control" asp-for="LastName" autocomplete="off" placeholder="Enter your last name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <div class="form-group">
+                            <label class="form-label text-dark" asp-for="ConfirmPassword">
+                                <i class="fa fa-key"></i> Confirm Password
+                            </label>
+                            <input class="form-control" asp-for="ConfirmPassword" type="password" autocomplete="off" placeholder="Confirm your password" />
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="IdPassportNumber"></label>
-                    <input class="form-control" asp-for="IdPassportNumber" autocomplete="off" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="StudentStaffNumber"></label>
-                    <input class="form-control" asp-for="StudentStaffNumber" autocomplete="off" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="FirstName"></label>
-                    <input class="form-control" asp-for="FirstName" autocomplete="off" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="LastName"></label>
-                    <input class="form-control" asp-for="LastName" autocomplete="off" />
-                </div>
-
-                <div class="form-group mt-5 mb-2">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="Password"></label>
-                    <input class="form-control" asp-for="Password" autocomplete="off" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="ConfirmPassword"></label>
-                    <input class="form-control" asp-for="ConfirmPassword" autocomplete="off" />
-                </div>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-dark btn-sm shadow-sm">
-                        <span class="fa fa-user-plus"></span>
-                        Create account
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fa fa-user-plus"></i> Sign Up
                     </button>
-                    <br /><br />
-                    Already have an account?
-                    <a asp-action="Login" asp-controller="Account">
-                        Login
-                    </a>
+                    <div class="mt-3">
+                        Already have an account? <a asp-action="Login" asp-controller="Account" class="text-primary">
+                            <i class="fa fa-sign-in-alt"></i> Log In
+                        </a>
+                    </div>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
+
+<!-- Include Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>

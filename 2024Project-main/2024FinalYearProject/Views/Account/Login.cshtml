@@ -3,55 +3,54 @@
     ViewBag.Title = "Login";
 }
 
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row card shadow-lg w-75 rounded">
+        <!-- Left Column: Image -->
+        <div class="col-md-6 d-none d-md-block p-0">
+            <img src="~/images/ufs.png" alt="Login Image" class="img-fluid" style="object-fit: cover; height: 100%; width: 100%;" />
+        </div>
 
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="card ">
-        <div>
-            <div class="p-4">
-                <h2 class="display-6 text-dark text-center ps-2 pe-2">Welcome back, login to your account</h2>
-            </div>
-            <div class="text-danger mt-1" asp-validation-summary="All"></div>
+        <!-- Right Column: Form -->
+        <div class="col-md-6 bg-light p-4">
+            <h2 class="text-primary text-center mb-4">
+                Welcome back, please log in
+            </h2>
 
-            <div class="p-4 pb-5">
-                <form asp-action="Login" asp-controller="Account" method="post">
+            <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
-                    <div class="form-group mb-2">
-                        <label class="text-uppercase fw-bolder text-dark-emphasis" asp-for="Email"></label>
-                        <input class="form-control" asp-for="Email" autocomplete="off"
-                            placeholder="Enter email address" />
-                    </div>
+            <form asp-action="Login" asp-controller="Account" method="post">
+                <div class="form-group mb-3">
+                    <label class="text-dark" asp-for="Email">Email</label>
+                    <input class="form-control" asp-for="Email" autocomplete="off" placeholder="Enter email address" />
                     <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-                    <div class="form-group mb-2">
-                        <div class="d-flex justify-content-between">
-                            <label class="text-uppercase fw-bolder text-dark-emphasis" asp-for="Password"></label>
-                            <a class="visually-hidden" asp-action="Recovery" asp-controller="Account">
-                                <small>Forgot Password?</small>
-                            </a>
-                        </div>
-
-                        <input class="form-control" asp-for="Password" placeholder="Enter password" />
-                    </div>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-
-                    <div class="mb-2 mt-1">
-                        <input class="form-check-input" asp-for="RememberMe" type="checkbox" />
-                        <label class="form-check-label">Remember me</label>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">
-                            Login to your account
-                        </button>
-                        <br /><br />
-                        Don't have an account?
-                        <a asp-action="Register" asp-controller="Account">
-                            Create an account
+                <div class="form-group mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="text-dark" asp-for="Password">Password</label>
+                        <a class="text-muted" asp-action="Recovery" asp-controller="Account">
+                            <small>Forgot Password?</small>
                         </a>
-
                     </div>
-                </form>
-            </div>
+                    <input class="form-control" asp-for="Password" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="RememberMe" type="checkbox" />
+                    <label class="form-check-label text-dark">Remember me</label>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+                    <br /><br />
+                    <span class="text-muted">Don't have an account?</span>
+                    <a asp-action="Register" asp-controller="Account" class="text-info">Create an account</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- Include Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
