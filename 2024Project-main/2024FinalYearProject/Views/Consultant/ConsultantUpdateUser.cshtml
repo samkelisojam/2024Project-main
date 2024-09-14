@@ -1,60 +1,60 @@
 ﻿@model ConsultantUpdateUserModel
 
-<div class="container d-flex justify-content-center">
-    <div class="col-md-6">
-        <h2>Update Profile</h2>
-        <hr />
-        <form asp-action="ConsultantUpdateUser" asp-controller="Consultant" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label">Email <i class="fas fa-envelope"></i></label>
-                <input asp-for="Email" readonly class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+<div class="container mt-4">
+    <h2 class="mb-4">Update Profile</h2>
+    <form asp-action="ConsultantUpdateUser" asp-controller="Consultant" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="Lastname" class="control-label">Lastname <i class="fa-solid fa-id-card-clip"></i></label>
-                <input asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
-            </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><label asp-for="Email" class="control-label">Email <i class="fas fa-envelope"></i></label></td>
+                    <td><input asp-for="Email" readonly class="form-control" /></td>
+                    <td><span asp-validation-for="Email" class="text-danger"></span></td>
+                </tr>
 
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label">DateOfBirth <i class="fa-solid fa-calendar-days"></i></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
+                <tr>
+                    <td><label asp-for="Lastname" class="control-label">Lastname <i class="fa-solid fa-id-card-clip"></i></label></td>
+                    <td><input asp-for="Lastname" class="form-control" /></td>
+                    <td><span asp-validation-for="Lastname" class="text-danger"></span></td>
+                </tr>
 
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Phone Number <i class="fas fa-phone"></i></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-        
-            <div>
-                <h5>Manage User Logins</h5>
-                <br />
-                <div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label">Password <i class="fa-solid fa-lock"></i></i></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+                <tr>
+                    <td><label asp-for="DateOfBirth" class="control-label">Date of Birth <i class="fa-solid fa-calendar-days"></i></label></td>
+                    <td><input asp-for="DateOfBirth" type="date" class="form-control" /></td>
+                    <td><span asp-validation-for="DateOfBirth" class="text-danger"></span></td>
+                </tr>
 
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="control-label">Confirm Password <i class="fa-solid fa-lock"></i></i></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
+                <tr>
+                    <td><label asp-for="PhoneNumber" class="control-label">Phone Number <i class="fas fa-phone"></i></label></td>
+                    <td><input asp-for="PhoneNumber" class="form-control" /></td>
+                    <td><span asp-validation-for="PhoneNumber" class="text-danger"></span></td>
+                </tr>
 
-                <input asp-for="IDNumber" class="form-control" hidden />
-                <input asp-for="Userrole" class="form-control" hidden />
-                <input asp-for="Email" class="form-control" hidden />
-            
-            <div class="mt-4 form-group d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Update</button>
-            </div>
-        </form>
-    </div>
+                <tr>
+                    <td colspan="3">
+                        <h5>Manage User Logins</h5>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label">Password <i class="fa-solid fa-lock"></i></label>
+                            <input asp-for="Password" type="password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="control-label">Confirm Password <i class="fa-solid fa-lock"></i></label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <input asp-for="IDNumber" class="form-control" hidden />
+        <input asp-for="Userrole" class="form-control" hidden />
+        <input asp-for="Email" class="form-control" hidden />
+
+        <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
 </div>

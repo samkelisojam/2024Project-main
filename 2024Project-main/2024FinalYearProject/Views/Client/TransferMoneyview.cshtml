@@ -1,40 +1,63 @@
 ﻿@model MoneyTransferViewModel
 
+<!-- Include Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-sm">
+            <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-info text-white">
-                    <h3>Transfer Money <i class="fas fa-exchange-alt"></i></h3>
+                    <h3>Transfer Money <i class="fas fa-exchange-alt ms-2"></i></h3>
                 </div>
                 <div class="card-body p-4">
                     <form asp-action="TransferMoneyView" method="post">
+                        <!-- Validation summary -->
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    
-
-                        <div class="form-group mb-3">
-                            <label asp-for="ReceiverBankAccountNumber" class="control-label">Receiver Account <i class="fas fa-user-circle"></i></label>
-                            <input asp-for="ReceiverBankAccountNumber" class="form-control" />
+                        <!-- Receiver Account Input with Icon -->
+                        <div class="form-group mb-4">
+                            <label asp-for="ReceiverBankAccountNumber" class="control-label">
+                                Receiver Account <i class="fas fa-user-circle ms-2"></i>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-info text-white">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input asp-for="ReceiverBankAccountNumber" class="form-control" placeholder="Enter receiver's account number" />
+                            </div>
                             <span asp-validation-for="ReceiverBankAccountNumber" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Amount" class="control-label">Amount <i class="fas fa-money-bill-alt"></i></label>
-                            <input asp-for="Amount" class="form-control" />
+                        <!-- Amount Input with Icon -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Amount" class="control-label">
+                                Amount <i class="fas fa-money-bill-alt ms-2"></i>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-info text-white">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </span>
+                                <input asp-for="Amount" class="form-control" placeholder="Enter amount" />
+                            </div>
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
 
-                     
-
+                        <!-- Submit Button with Icon -->
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-secondary btn-block">Send Money <i class="fas fa-arrow-right"></i></button>
+                            <button type="submit" class="btn btn-info btn-block text-white">
+                                Send Money <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <!-- Back Button -->
             <div class="text-center mt-3">
-                <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>Go Back</a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Go Back
+                </a>
             </div>
         </div>
     </div>

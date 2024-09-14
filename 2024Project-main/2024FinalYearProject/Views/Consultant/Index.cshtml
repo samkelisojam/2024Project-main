@@ -1,5 +1,8 @@
 @model ConsultantViewModel
 
+<!-- Include Font Awesome for icons if not already included -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
 <div class="container mt-4">
     @if (TempData["Message"] != null)
     {
@@ -8,60 +11,51 @@
             @TempData["Message"]
         </div>
     }
+
     <h3 class="mb-5">Consultant Control Panel</h3>
     <div class="row">
         <div class="col-md-2">
-            <div class="list-group ">
-                <a class="list-group-item list-group-item-info list-group-item-action active" asp-action="Index"
-                   asp-controller="Consultant">View Clients</a>
-                <a class="list-group-item list-group-item-info list-group-item-action" asp-action="ViewReviews"
-                   asp-controller="Consultant">View Reviews</a>
-                <a class="list-group-item list-group-item-info list-group-item-action" asp-action="GenerateReport"
-                   asp-controller="Consultant">Generate Report</a>
+            <div class="list-group">
+                Welcome back
             </div>
         </div>
         <div class="col-md-10">
             <h3>Clients</h3>
             @if (Model.appUsers.Count() > 0)
             {
-                <table class="table table-striped-columns table-info">
-                    <thead>
-                        <tr>
-                            <th scope="col">Account No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Student/Staff No.</th>
-                            <th scope="col">Deposit/Withdraw</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model.appUsers)
-                        {
-                            <tr>
-                                <th scope="row">@user.AccountNumber &nbsp;<span class="badge bg-success">Active</span></th>
-                                <td>@(user.FirstName + " " + user.LastName)</td>
-                                <td>@user.Email</td>
-                                <td>@user.StudentStaffNumber</td>
-                                <td>
-                                    <a class="btn btn-warning" asp-action="DepositWithdraw" asp-controller="Consultant" asp-route-email="@user.Email">
-                                        <i class="fa-solid fa-money-bill-transfer"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-warning" asp-action="ConsultantUpdateUser" asp-controller="Consultant" asp-route-email="@user.Email">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                    <a class="btn btn-danger" asp-action="ConsultantDeleteUser" asp-controller="Consultant" asp-route-email="@user.Email" onclick="return confirm(`Are you sure you want to delete user: ${@user.Email} ?`);">
-                                        <span class="fa-solid fa-trash"></span>
-                                    </a>
-                                    <a class="btn btn-outline-primary"
-                                       asp-action="ViewAllLogins" asp-controller="Consultant" asp-route-email="@user.Email">View Logins</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <div class="row">
+                    @foreach (var user in Model.appUsers)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="card-title"><i class="fas fa-user-circle"></i> @user.FirstName @user.LastName</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><i class="fas fa-credit-card"></i> Account No: @user.AccountNumber</p>
+                                    <p class="card-text"><i class="fas fa-envelope"></i> Email: @user.Email</p>
+                                    <p class="card-text"><i class="fas fa-id-badge"></i> Student/Staff No: @user.StudentStaffNumber</p>
+                                    <div class="d-flex justify-content-between">
+                                        <a class="btn btn-warning" asp-action="DepositWithdraw" asp-controller="Consultant" asp-route-email="@user.Email">
+                                            <i class="fas fa-money-bill-wave"></i> Deposit/Withdraw
+                                        </a>
+                                        <div>
+                                            <a class="btn btn-warning me-2" asp-action="ConsultantUpdateUser" asp-controller="Consultant" asp-route-email="@user.Email">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger" asp-action="ConsultantDeleteUser" asp-controller="Consultant" asp-route-email="@user.Email" onclick="return confirm('Are you sure you want to delete user: @user.Email?');">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                            <a class="btn btn-outline-primary" asp-action="ViewAllLogins" asp-controller="Consultant" asp-route-email="@user.Email">
+                                                <i class="fas fa-sign-in-alt"></i> View Logins
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             }
             else
             {

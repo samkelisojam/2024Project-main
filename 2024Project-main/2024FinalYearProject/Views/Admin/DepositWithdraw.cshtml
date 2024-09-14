@@ -1,11 +1,11 @@
-﻿ @model ConsultantDepositModel
+﻿@model ConsultantDepositModel
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header text-center bg-info text-white">
-                    <h3>Deposit Or Withdraw Money: @Model.AccountNumber <i class="fas fa-exchange-alt"></i></h3>
+                    <h3>Deposit or Withdraw Money: @Model.AccountNumber <i class="fas fa-exchange-alt"></i></h3>
                     <h6>Email: @Model.UserEmail</h6>
                 </div>
                 <div class="card-body">
@@ -14,28 +14,30 @@
 
                         <input asp-for="UserEmail" class="form-control" hidden />
                         <input asp-for="AccountNumber" class="form-control" hidden />
+
                         <div class="p-3">
                             <div class="form-check">
-                                <input class="form-check-input" checked value="withdraw" type="radio" name="action" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
+                                <input class="form-check-input" value="withdraw" type="radio" name="action" id="withdrawRadio" />
+                                <label class="form-check-label" for="withdrawRadio">
                                     Withdraw
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" value="withdraw" type="radio" name="action" id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
+                                <input class="form-check-input" value="deposit" type="radio" name="action" id="depositRadio" />
+                                <label class="form-check-label" for="depositRadio">
                                     Deposit
                                 </label>
                             </div>
                         </div>
+
                         <div class="form-group mb-3">
-                            <label asp-for="Amount" class="control-label">Amount <i class="fas fa-money-bill-alt"></i></label>
+                            <label asp-for="Amount" class="form-label">Amount <i class="fas fa-money-bill-alt"></i></label>
                             <input asp-for="Amount" class="form-control" />
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-block">Transfer <i class="fas fa-arrow-right"></i></button>
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-success">Transfer <i class="fas fa-arrow-right"></i></button>
                         </div>
                     </form>
                 </div>

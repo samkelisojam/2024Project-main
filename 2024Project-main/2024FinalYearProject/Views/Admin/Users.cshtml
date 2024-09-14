@@ -1,120 +1,77 @@
 ﻿@using _2024FinalYearProject.Models.ViewModels.Admin
 @model UserPageViewModel
 @{
-    ViewData["Title"] = "Edit-Profile";
+    ViewData["Title"] = "Manage Users";
 }
 
-<div class="wrapper">
-    <aside id="sidebar">
-        <div class="d-flex">
-            <button class="toggle-btn" type="button">
-                <i class="lni lni-grid-alt"></i>
-            </button>
-            <div class="sidebar-logo">
-                <a href="#"></a>
-            </div>
-        </div>
-        <ul class="sidebar-nav">
-            <li class="sidebar-item" b>
-                <a asp-action="Users" class="sidebar-link">
-                    <i class="lni lni-user"></i>
-                    <span>Manage Users</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-agenda"></i>
-                    <span>Manage Consultants</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-popup"></i>
-                    <span>Notification</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-cog"></i>
-                    <span>Logout</span>
-                </a>
-            </li>
-        </ul>
-
-    </aside>
-    <div class="main">
-        <main class="content px-3 py-4">
-            <div class="container-fluid">
-                <div class="mb-3">
-                    <h3 class="fw-bold fs-4 mb-3">Manage Users</h3>
-                    <div class="row">
-                        <div class="col-12">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="fw-bold fs-4">Manage Users</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        @if (Model.AppUsers.Count == 0)
+                        {
+                            <div class="alert alert-warning text-center" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i> No users found
+                            </div>
+                        }
+                        else
+                        {
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="highlight">
                                         <th scope="col">#</th>
-                                        <th scope="col">FirstName</th>
-                                        <th scope="col">LastName</th>
-                                        <th scope="col">Account-No</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Account No</th>
                                         <th scope="col">Balance</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.AppUsers.Count == 0)
+                                    @foreach (var user in Model.AppUsers.Select((user, index) => new { user, index }))
                                     {
                                         <tr>
-                                            <td colspan="6" class="text-center">
-                                                <i class="fas fa-exclamation-triangle red-icon"></i> No users Found
-                                            </td>
-                                        </tr>
-                                    }
-                                    @foreach (var user in Model.AppUsers)
-                                    {
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>@user.AppUser.FirstName</td>
-                                            <td>@user.AppUser.LastName</td>
-                                            <td>@user.AppUser.AccountNumber</td>
-                                            <td>R @user.BankAccount.Balance </td>
+                                            <th scope="row">@user.index + 1</th>
+                                            <td>@user.user.AppUser.FirstName</td>
+                                            <td>@user.user.AppUser.LastName</td>
+                                            <td>@user.user.AppUser.AccountNumber</td>
+                                            <td>R @user.user.BankAccount.Balance</td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm">
+                                                <a href="#" class="btn btn-primary btn-sm me-1">
                                                     <i class="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm">
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-sm">
                                                     <i class="fa-solid fa-trash"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     }
-
                                 </tbody>
                             </table>
-                        </div>
-                    </div> 
-                 </div>
-            </div>
-        </main>
-
-       
-
-
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row text-body-secondary">
-                    <div class="col-6 text-start ">
-                        <a class="text-body-secondary" href=" #">
-                            <strong>Holdings Tech</strong>
-                        </a>
+                        }
                     </div>
-
                 </div>
             </div>
-        </footer>
+        </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+
+<footer class="footer mt-5">
+    <div class="container-fluid">
+        <div class="row text-body-secondary">
+            <div class="col-6 text-start">
+                <a class="text-body-secondary" href="#">
+                    <strong>Holdings Tech</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="script.js"></script>

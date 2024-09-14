@@ -67,12 +67,31 @@
                             <li class="nav-item">
                                 <a class="nav-link @(action == "Index" && controller == "Consultant" ? "active fw-bold" : "")" asp-controller="Consultant" asp-action="Index"> <i class="fa-solid fa-users-line"></i> &nbsp;&nbsp; Consultant</a>
                             </li>
+
+
+
+
+                             <li class="nav-item">
+                            <a class="list-group-item list-group-item-info list-group-item-action active" asp-action="Index"
+                               asp-controller="Consultant">View Clients</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="list-group-item list-group-item-info list-group-item-action" asp-action="ViewReviews"
+                               asp-controller="Consultant">View Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="list-group-item list-group-item-info list-group-item-action" asp-action="GenerateReport"
+                               asp-controller="Consultant">Generate Report</a>
+
+                            </li>
                         }
                         @if (User.IsInRole("FinAdvisor"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link @(action == "Index" && controller == "FinAdvisor" ? "active fw-bold" : "")" asp-controller="FinAdvisor" asp-action="Index"> <i class="fa-solid fa-users-line"></i> &nbsp;&nbsp; Financial Advisor</a>
                             </li>
+
+
                         }
                         @if (User.IsInRole("Admin"))
                         {

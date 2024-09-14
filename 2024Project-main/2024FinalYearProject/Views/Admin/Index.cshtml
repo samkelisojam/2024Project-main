@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
 }
+
 <div class="container mt-4">
     @if (TempData["Message"] != null)
     {
@@ -11,143 +12,67 @@
             @TempData["Message"]
         </div>
     }
-    <h3 class="mb-5">Adminitrator Control Panel</h3>
+
+    <div class="text-center mb-4">
+        <h1>Welcome, Admin!</h1>
+        <p>Here are the available options for managing the system:</p>
+    </div>
+
     <div class="row">
-        <div class="col-md-2">
-            <div class="list-group ">
-                <a class="list-group-item list-group-item-info list-group-item-action @(Model.CurrentPage == "index" ? "active" : "")" asp-action="Index"
-                   asp-controller="Admin" asp-route-currentPage="index">View Clients</a>
-                <a class="list-group-item list-group-item-info list-group-item-action @(Model.CurrentPage == "consultants" ? "active" : "")" asp-action="Index"
-                   asp-controller="Admin" asp-route-currentPage="consultants">View Consultants</a>
-                <a class="list-group-item list-group-item-info list-group-item-action @(Model.CurrentPage == "Finacial Advisors" ? "active" : "")" asp-action="Index"
-                   asp-controller="Admin" asp-route-currentPage="finadvisor">View Finacial Advisors</a>
-                <a class="list-group-item list-group-item-info list-group-item-action @(Model.CurrentPage == "transactions" ? "active" : "")" asp-action="Index"
-                   asp-controller="Admin" asp-route-currentPage="transactions">View All Transactions</a>
-                <a class="list-group-item list-group-item-info list-group-item-action" asp-action="ViewAdvices"
-                   asp-controller="Admin">View FA Advice</a>
-                <a class="list-group-item list-group-item-info list-group-item-action" asp-action="GenerateReport"
-                   asp-controller="Admin">Generate Report</a>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title">View Clients</h5>
+                </div>
+                <div class="card-body">
+                    <p>Manage and review client profiles and their details.</p>
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Admin">Go to Clients</a>
+                </div>
             </div>
         </div>
-        <div class="col-md-10">
-            @if (Model.CurrentPage == "index" || Model.CurrentPage == "consultants" || Model.CurrentPage == "finadvisor")
-            {
-                var selectedUsers = Model.CurrentPage == "index" ? Model.Users : Model.CurrentPage == "consultants" ? Model.Consultants : Model.FinAdvisor;
-                <h3>@(Model.CurrentPage == "index" ? "Clients" : Model.CurrentPage == "consultants" ? "Consultants" : "Financial Advisors")</h3>
-                @if (selectedUsers.Count() > 0)
-                {
-                    <table class="table table-striped-columns table-info">
-                        <thead>
-                            <tr>
-                                <th scope="col">Account No.</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                @if (Model.CurrentPage == "index")
-                                {
-                                    <th scope="col">Roles</th>
-                                    <th scope="col">Deposit/Withdraw</th>
-                                }
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in selectedUsers)
-                            {
-                                <tr>
-                                    <th scope="row">@user.AccountNumber &nbsp;<span class="badge bg-success">Active</span></th>
-                                    <td>@(user.FirstName + " " + user.LastName)</td>
-                                    <td>@user.Email</td>
-                                    @if (Model.CurrentPage == "index")
-                                    {
-                                        <td>
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                Assign Role
-                                            </button>
-                                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                                                                <strong>@user.AccountNumber | </strong>Available Roles
-                                                            </h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <a asp-action="AssignRole" asp-route-role="c" asp-route-email="@user.Email" asp-controller="Admin" id="cons" class="btn btn-danger m-3">Consultant</a>
-                                                            <br />
-                                                            <a asp-action="AssignRole" asp-route-role="f" asp-route-email="@user.Email" asp-controller="Admin" class="btn btn-danger m-3">Finacial Advisor</a>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <a class="btn btn-warning" asp-action="DepositWithdraw" asp-controller="Admin" asp-route-email="@user.Email">
-                                                <i class="fa-solid fa-money-bill-transfer"></i>
-                                            </a>
-                                        </td>
-                                    }
-                                    <td>
-                                        <a class="btn btn-warning" asp-action="ManageUser" asp-controller="Admin" asp-route-email="@user.Email">
-                                            <span class="fa fa-edit"></span>
-                                        </a>
-                                        <a class="btn btn-danger" asp-action="AdminDeleteUser" asp-controller="Admin" asp-route-email="@user.Email" onclick="return confirm(`Are you sure you want to delete user: ${@user.Email} ?`);">
-                                            <span class="fa-solid fa-trash"></span>
-                                        </a>
-                                        <a class="btn btn-outline-primary"
-                                           asp-action="ViewAllLogins" asp-controller="Admin" asp-route-email="@user.Email">View Logins</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-                else
-                {
-                    <h1>No users found</h1>
-                }
-
-            }
-            else if (Model.CurrentPage == "transactions")
-            {
-                <h3>Transactions</h3>
-                @if (Model.Transactions.Count() > 0)
-                {
-                    <table class="table table-striped-columns table-info">
-                        <thead>
-                            <tr>
-                                <th scope="col">Reference</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Receiver Acc. No.</th>
-                                <th scope="col">Sender Acc. No.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var transaction in Model.Transactions)
-                            {
-                                <tr>
-                                    <th scope="row">@transaction.Reference</th>
-                                    <td>@(transaction.Amount)</td>
-                                    <td>@transaction.TransactionDate</td>
-                                    <td>@transaction.UserEmail</td>
-                                    <td>@transaction.BankAccountIdReceiver</td>
-                                    <td>@transaction.BankAccountIdSender</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-                else
-                {
-                    <h1>No Transactions found</h1>
-                }
-            }
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title">View Consultants</h5>
+                </div>
+                <div class="card-body">
+                    <p>Oversee consultant profiles and manage their information.</p>
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Admin" asp-route-currentPage="consultants">Go to Consultants</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title">View Financial Advisors</h5>
+                </div>
+                <div class="card-body">
+                    <p>Manage financial advisor profiles and their activities.</p>
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Admin" asp-route-currentPage="finadvisor">Go to Financial Advisors</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title">View All Transactions</h5>
+                </div>
+                <div class="card-body">
+                    <p>Monitor and review all transactions within the system.</p>
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Admin" asp-route-currentPage="transactions">Go to Transactions</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title">View FA Advice</h5>
+                </div>
+                <div class="card-body">
+                    <p>Access and review advice provided by financial advisors.</p>
+                    <a class="btn btn-info" asp-action="ViewAdvices" asp-controller="Admin">Go to FA Advice</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

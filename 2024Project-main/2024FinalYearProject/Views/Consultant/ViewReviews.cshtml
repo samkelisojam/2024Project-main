@@ -1,30 +1,46 @@
 ﻿@model IEnumerable<FeedBack>
 
-<div class="container">
+<div class="container mt-5">
     <h3>All Client Review(s)</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Email</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Date</th>
-                <th scope="col">Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rev in Model)
-            {
-                <tr>
-                    <th scope="row">@rev.UserEmail</th>
-                    <td>@rev.Comment</td>
-                    <td>@rev.dateTime.ToShortDateString()</td>
-                    <td><strong>@rev.Rate</strong> out of 5</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
-    <div class="mb-3">
-        <a asp-action="Index" asp-controller="Consultant" class="btn btn-info">Go back</a>
+    <div class="row">
+        @foreach (var rev in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header text-white @GetRatingClass(rev.Rate)">
+                        <h5 class="card-title">@rev.UserEmail</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Comment:</strong> @rev.Comment</p>
+                        <p class="card-text"><strong>Date:</strong> @rev.dateTime.ToShortDateString()</p>
+                        <p class="card-text">
+                            <strong>Rating:</strong>
+                            <span class="badge @GetRatingBadgeClass(rev.Rate)">
+                                @rev.Rate out of 5
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mb-3 text-center">
+        <a asp-action="Index" asp-controller="Consultant" class="btn btn-info">
+            <i class="fas fa-arrow-left"></i> Go back
+        </a>
     </div>
 </div>
+
+@functions {
+    private string GetRatingClass(int rate)
+    {
+        return rate < 3 ? "bg-danger" : rate == 3 ? "bg-primary" : "bg-success";
+    }
+
+    private string GetRatingBadgeClass(int rate)
+    {
+        return rate < 3 ? "bg-danger text-white" : rate == 3 ? "bg-primary text-white" : "bg-success text-white";
+    }
+}

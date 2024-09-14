@@ -1,27 +1,39 @@
 @model ConsultantViewModel
 
-<div class="container">
-    <h3>User Login Sessions - @Model.SelectedUser.Email</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Account No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Id Number</th>
-                <th scope="col">Recent Login</th>
-            </tr>
-        </thead>
-        <tbody> @foreach (var login in Model.loginSessions)
-            {
-                <tr>
-                    <th scope="row">@Model.SelectedUser.AccountNumber</th>
-                    <td>@(Model.SelectedUser.FirstName + " " + Model.SelectedUser.LastName)</td>
-                    <td>@Model.SelectedUser.Email</td>
-                    <td>@Model.SelectedUser.IDnumber</td>
-                    <td>@login.TimeStamp</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<!-- Include Font Awesome for icons if not already included -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h3>
+                <i class="fas fa-user-clock"></i> User Login Sessions - @Model.SelectedUser.Email
+            </h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col"><i class="fas fa-credit-card"></i> Account No</th>
+                        <th scope="col"><i class="fas fa-user"></i> Name</th>
+                        <th scope="col"><i class="fas fa-envelope"></i> Email</th>
+                        <th scope="col"><i class="fas fa-id-card"></i> Id Number</th>
+                        <th scope="col"><i class="fas fa-sign-in-alt"></i> Recent Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var login in Model.loginSessions)
+                    {
+                        <tr>
+                            <th scope="row">@Model.SelectedUser.AccountNumber</th>
+                            <td>@(Model.SelectedUser.FirstName + " " + Model.SelectedUser.LastName)</td>
+                            <td>@Model.SelectedUser.Email</td>
+                            <td>@Model.SelectedUser.IDnumber</td>
+                            <td>@login.TimeStamp</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

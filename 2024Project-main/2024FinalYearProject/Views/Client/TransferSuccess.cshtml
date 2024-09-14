@@ -1,13 +1,35 @@
 ﻿@model TransferSuccessViewModel
 
-<div class="container">
-    <h2>Transfer Successful <i class="fas fa-check-circle"></i></h2>
-    <hr />
-    <div class="alert alert-success">
-        <strong>Success!</strong> You have successfully transferred @Model.Amount to account @Model.ReceiverAccount.
-    </div>
-    <div class="form-group">
-        <a asp-action="Index" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
-        <a asp-action="TransferMoneyview" class="btn btn-secondary"><i class="fas fa-exchange-alt"></i> Transfer Again</a>
+<!-- Include Font Awesome for icons if not already included -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4">
+                <!-- Success Title -->
+                <div class="text-center mb-4">
+                    <h2 class="text-success">Transfer Successful <i class="fas fa-check-circle ms-2"></i></h2>
+                    <hr />
+                </div>
+
+                <!-- Success Message -->
+                <div class="alert alert-success text-center">
+                    <strong>Success!</strong> You have successfully transferred
+                    <strong>@Model.Amount</strong> to account
+                    <strong>@Model.ReceiverAccount</strong>.
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center mt-4">
+                    <a asp-action="Index" class="btn btn-primary me-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                    </a>
+                    <a asp-action="TransferMoneyView" class="btn btn-secondary">
+                        <i class="fas fa-exchange-alt me-1"></i> Transfer Again
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
