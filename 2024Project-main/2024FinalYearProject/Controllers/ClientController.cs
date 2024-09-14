@@ -21,20 +21,31 @@ namespace _2024FinalYearProject.Controllers
         public string Message { get; set; }
         public async Task<IActionResult> IndexAsync()
         {
+            // Get the logged-in user's username
             var username = User.Identity.Name;
 
-            var user = await _userManager.FindByNameAsync(username);
-            var model = new UpdateProfileViewModel
-            {
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                AccountNumber = user.AccountNumber,
-                IDNumber = user.IDnumber,
-                Userrole = user.UserRole,
-                Lastname = user.LastName + " " + user.FirstName,
-            };
-            return View(model);
 
+            var user = await _userManager.FindByNameAsync(username);
+
+            // Get all bank accounts for the user
+            var allBankAccounts = await _repo.BankAccount.GetAllAsync();
+
+
+            var userBankAccounts = allBankAccounts.Where(b => b.UserEmail == user.Email).ToList();
+
+
+            var transactions = await _repo.Transaction.GetAllAsync();
+            var userTransactions = transactions.Where(t => userBankAccounts.Any(b => b.UserEmail == user.Email)).ToList();
+
+
+            var viewModel = new BankAccountViewModel
+            {
+                BankAccount = userBankAccounts,
+                Transactions = userTransactions
+            };
+
+            // Return the view with the viewModel
+            return View(viewModel);
         }
 
         public async Task<IActionResult> NotificationMessage()
@@ -62,112 +73,9 @@ namespace _2024FinalYearProject.Controllers
             return View(userNotifications);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Transactions()
-        {
+      
 
-            var username = User.Identity.Name;
-
-            var user = await _userManager.FindByNameAsync(username);
-
-            if (user == null)
-            {
-
-                return NotFound();
-            }
-            var allTransaction = await _repo.Transaction.GetAllAsync();
-
-            var userTransaction = allTransaction.Where(n => n.UserEmail == user.Email).ToList();
-
-            return View(userTransaction);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CashSent()
-        {
-            var username = User.Identity.Name;
-
-            var user = await _userManager.FindByNameAsync(username);
-
-            var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
-
-            if (bankAccount == null)
-            {
-                return View("NotFound");
-            }
-
-            var model = new CashSentViewModel
-            {
-                BankAccountId = bankAccount.Id,
-                AvailableBalance = bankAccount.Balance
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-
-        public async Task<IActionResult> CashSent(CashSentViewModel model)
-        {
-            var username = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
-
-            var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
-
-            if (bankAccount == null || bankAccount.Balance < model.Amount)
-            {
-                ModelState.AddModelError("", "Insufficient balance or account not found.");
-                return View(model);
-            }
-
-            bankAccount.Balance -= model.Amount;
-
-            var transaction = new Transaction
-            {
-                BankAccountIdSender = bankAccount.Id,
-                BankAccountIdReceiver = 0,
-                Amount = model.Amount,
-                TransactionDate = DateTime.Now,
-                UserEmail = user.Email,
-                Reference = "CashSent",
-            };
-
-            var cashDigit = GenerateRandomNumber(13);
-            var pinNumber = GenerateRandomNumber(4);
-
-            await _repo.Transaction.AddAsync(transaction);
-            var notification = new Notification
-            {
-                Message = $"You have successfully sent cash. Amount: {model.Amount:C}.",
-                NotificationDate = DateTime.Now,
-                IsRead = false,
-                UserEmail = user.Email
-            };
-            await _repo.Notification.AddAsync(notification);
-
-            return RedirectToAction("CashSentSuccess", new { cashDigit, pinNumber, transactionDate = transaction.TransactionDate });
-        }
-
-        public IActionResult CashSentSuccess(string cashDigit, string pinNumber, DateTime transactionDate)
-        {
-            ViewBag.CashDigit = cashDigit;
-            ViewBag.PinNumber = pinNumber;
-            ViewBag.TransactionDate = transactionDate;
-            return View();
-        }
-
-        private string GenerateRandomNumber(int length)
-        {
-            var random = new Random();
-            string result = string.Empty;
-            for (int i = 0; i < length; i++)
-            {
-                result += random.Next(0, 10).ToString();
-            }
-            return result;
-        }
+      
 
         [HttpGet]
         public IActionResult AddRating()
@@ -194,20 +102,8 @@ namespace _2024FinalYearProject.Controllers
             return View(feedback);
         }
 
-        public async Task<IActionResult> ViewBankBalance()
-        {
-            var username = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
-            var allBankAccount = await _repo.BankAccount.GetAllAsync();
-            var bankAccount = allBankAccount.FirstOrDefault(b => b.UserEmail == user.Email && b.AccountOrder == 1);
-            var viewModel = new BankAccountViewModela
-            {
-                AccountNumber = bankAccount.AccountNumber,
-                Balance = bankAccount.Balance,
-
-            };
-            return View(viewModel);
-        }
+       
+      
 
         public async Task<bool> TransferMoney(string senderAccountNumber, string receiverAccountNumber, decimal amount)
         {

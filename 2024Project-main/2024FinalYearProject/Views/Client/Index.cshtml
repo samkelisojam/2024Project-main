@@ -1,64 +1,102 @@
-﻿@model UpdateProfileViewModel
+﻿@model BankAccountViewModel
 
-@{
-    ViewBag.Title = "Online Banking - User View";
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
 
-<div class="container mt-5">
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible">
-            <button class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
-            @TempData["Message"]
-        </div>
-    }
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm" style="background-color: transparent !important">
-                <div class="user-profile text-center">
-                    <img src="~/Images/user-avatar.png" alt="User Profile Picture" class="rounded-circle mb-3" style="max-width: 150px;" />
+    <style>
+        .account-balance-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            text-align: center;
+        }
 
-                    <h4 class="profile-name">@Model.Lastname</h4>
-                    <p class="profile-info"><strong>Account number:</strong> @Model.AccountNumber</p>
-                    <p class="profile-info"><strong>ID Number:</strong> @Model.IDNumber</p>
-                    @if (Model.PhoneNumber != null)
+        .account-balance {
+            font-size: 2.5em;
+            color: #28a745;
+        }
+
+        .transaction-list-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .transaction-item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .transaction-item:last-child {
+                border-bottom: none;
+            }
+
+            .transaction-item .date {
+                font-size: 0.9em;
+                color: #6c757d;
+            }
+
+            .transaction-item .amount {
+                font-size: 1.2em;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Bank Account Balance Section -->
+            <div class="col-md-8">
+                @foreach (var Account in Model.BankAccount)
+                {
+                    <div class="account-balance-card">
+                        <h2>@Account.BankAccountType</h2>
+                        <p><strong>Account Number:</strong> @Account.AccountNumber</p>
+                        <p><strong>Balance:</strong> <span class="account-balance">R @Account.Balance</span></p>
+                    </div>
+                }
+
+            </div>
+
+            <!-- Transactions Section -->
+            <div class="col-md-8">
+                <div class="transaction-list-card">
+                    <h4>Recent Transactions</h4>
+                    @if (Model.Transactions != null && Model.Transactions.Any())
                     {
-                        <p class="profile-info">
-                            <strong>Phone number:</strong> @Model.PhoneNumber
-                        </p>
+                        foreach (var transaction in Model.Transactions)
+                        {
+                            <div class="transaction-item">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <span>@transaction.Reference</span>
+                                        <br />
+                                        <span class="date">@transaction.TransactionDate.ToString("MM/dd/yyyy")</span>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <span class="amount">R @transaction.Amount</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
-                    <p class="profile-info"><strong>Email:</strong> @Model.Email</p>
-                    <a asp-action="UpdateProfile" asp-controller="Account" class="btn btn-info btn-update">Update Profile</a>
+                    else
+                    {
+                        <p>No transactions available.</p>
+                    }
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="row">
-                <a asp-action="TransferMoneyview" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important;height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fas fa-credit-card fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center">Transfer Money</h5>
-                </a>
-                <a asp-action="ViewBankBalance" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fas fa-file-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center">View Bank Balance</h5>
-                </a>
-                <a asp-action="Transactions" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fas fa-history fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center"> View Previous Transactions</h5>
-                </a>
-                <a asp-action="CashSent" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important;height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fas fa-money-bill-alt fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center">Cash Send(Cardless)</h5>
-                </a>
-                <a asp-action="NotificationMessage" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fas fa-message fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center"> Notificactions</h5>
-                </a>
-                <a asp-action="AddRating" asp-controller="Client" class="card p-3 shadow-sm m-2 text-bg-info test" style="background-color: transparent !important; height: 200px!important;width: 200px !important; text-decoration: none;">
-                    <i class="fa-solid fa-star-half-stroke  fa-2xl mr-2 text-center mt-5 mb-2"></i>
-                    <h5 class="mt-5 text-center"> Review</h5>
-                </a>
-            </div>
-        </div>
     </div>
-</div>
+
+
+</body>
+</html>

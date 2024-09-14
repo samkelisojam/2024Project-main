@@ -3,49 +3,66 @@
     ViewBag.Title = "Login";
 }
 
+<!-- Include Font Awesome in your project -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
-<div class="d-flex justify-content-center align-items-center mt-5" style="min-height: 50vh;">
-    <div>
+<div class="d-flex justify-content-center align-items-center mt-5" style="min-height: 50vh; background-color: #f5f5f5;">
+    <div class="container p-4" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
         <div>
-            <h2 class="display-6 text-dark text-center ps-2 pe-2">Welcome back, login to your account</h2>
+            <h2 class="display-6 text-dark text-center ps-2 pe-2">
+                <i class="fas fa-sign-in-alt me-2"></i> Welcome back, login to your account
+            </h2>
         </div>
         <div class="text-danger mt-1" asp-validation-summary="All"></div>
 
         <div>
             <form asp-action="Login" asp-controller="Account" method="post">
-
-                <div class="form-group mb-2">
+                <!-- Email input with icon -->
+                <div class="form-group mb-3">
                     <label class="text-uppercase fw-bolder text-dark-emphasis" asp-for="Email"></label>
-                    <input class="form-control" asp-for="Email" autocomplete="off"
-                           placeholder="Enter email address" />
+                    <div class="input-group">
+                        <span class="input-group-text bg-info text-white">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input class="form-control" asp-for="Email" autocomplete="off" placeholder="Enter email address" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Email" class="text-danger"></span>
 
-                <div class="form-group mb-2">
+                <!-- Password input with icon -->
+                <div class="form-group mb-3">
                     <div class="d-flex justify-content-between">
                         <label class="text-uppercase fw-bolder text-dark-emphasis" asp-for="Password"></label>
-                        <a class="visually-hidden" asp-action="Recovery" asp-controller="Account">
+                        <a asp-action="Recovery" asp-controller="Account" class="text-muted">
                             <small>Forgot Password?</small>
                         </a>
                     </div>
-
-                    <input class="form-control" asp-for="Password" placeholder="Enter password" />
+                    <div class="input-group">
+                        <span class="input-group-text bg-info text-white">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input class="form-control" asp-for="Password" type="password" placeholder="Enter password" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
 
-                <div class="mb-2 mt-1">
+                <!-- Remember me checkbox -->
+                <div class="form-check mb-2">
                     <input class="form-check-input" asp-for="RememberMe" type="checkbox" />
-                    <label class="form-check-label">Remember me</label>
+                    <label class="form-check-label text-dark">
+                        <i class="fas fa-check-square"></i> Remember me
+                    </label>
                 </div>
 
+                <!-- Submit button -->
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-info shadow-sm">
-                        Login to your account
+                    <button type="submit" class="btn btn-info shadow-sm w-100">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login to your account
                     </button>
                     <br /><br />
                     Don't have an account?
-                    <a asp-action="Register" asp-controller="Account">
-                        Create an account
+                    <a asp-action="Register" asp-controller="Account" class="text-info">
+                        <i class="fas fa-user-plus"></i> Create an account
                     </a>
                 </div>
             </form>

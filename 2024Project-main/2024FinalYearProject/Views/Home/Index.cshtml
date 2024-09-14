@@ -1,48 +1,151 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to Our Paging System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
 
-<!-- Page Background Color -->
-<style>
-    body {
-        background-color: #fff; /* Light, soft background color */
-    }
-</style>
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+        }
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-5">
-            <img src="~/Images/back.jpg" alt="Bank Image" class="img-fluid">
-        </div>
-        <div class="col-md-7">
-            <h3>Welcome to Our Online Banking</h3>
-            <p>Discover seamless banking services, secure transactions, and personalized financial management. Get started today!</p>
-            <ul> <li><strong><i class="fa-solid fa-file-shield me-3"></i>Secure Account Management:</strong> <ul> <li>Create and manage your accounts securely.</li> <li>View balances, transaction history, and statements.</li> </ul> </li> <li><strong><i class="fa-solid fa-piggy-bank me-3"></i>Fund Transfers:</strong> <ul> <li>Transfer money between your own accounts.</li> <li>Send funds to other bank accounts (within the same bank or external).</li> </ul> </li> <li><strong><i class="fa-solid fa-money-bill-transfer me-4"></i>Bill Payments:</strong> <ul> <li>Pay utility bills, credit card bills, and other recurring payments.</li> <li>Set up automatic bill payments.</li> </ul> </li> <li><strong><i class="fa-solid fa-mobile-screen-button me-3"></i>Mobile Check Deposit:</strong> <ul> <li>Snap photos of checks and deposit them using the app.</li> <li>Convenient for remote check deposits.</li> </ul> </li> </ul>
-            @if (User.Identity.IsAuthenticated)
-            {
-                @if (User.IsInRole("User"))
-                {
-                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Client">Get Started</a>
-                }
-                else if (User.IsInRole("Consultant"))
-                {
-                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Consultant">Consultant Control Panel</a>
-                }
-                else if (User.IsInRole("Admin"))
-                {
-                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="Admin">Admin Control Panel</a>
-                }
-                else
-                {
-                    <a class="btn btn-info btn-lg mt-5" asp-action="Index" asp-controller="FinAdvisor">Financial Advisor Control Panel</a>
-                }
+            .header h1 {
+                font-size: 3em;
+                margin: 0;
             }
-            else
-            {
-                <a class="btn btn-info btn-lg mt-5" asp-action="Login" asp-controller="Account">Create Your Own Account</a>
+
+            .header p {
+                font-size: 1.2em;
+                margin: 10px 0 0;
             }
+
+        .welcome-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+            .welcome-section h2 {
+                font-size: 2.5em;
+                margin-bottom: 20px;
+                color: #0066cc;
+            }
+
+            .welcome-section p {
+                font-size: 1.2em;
+                text-align: center;
+                max-width: 800px;
+            }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-10px);
+            }
+
+            .feature-card h3 {
+                color: #0066cc;
+                font-size: 1.5em;
+            }
+
+            .feature-card p {
+                font-size: 1em;
+                color: #555;
+            }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+            .cta-section a {
+                background-color: #0066cc;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 30px;
+                text-decoration: none;
+                font-size: 1.2em;
+                transition: background-color 0.3s;
+            }
+
+                .cta-section a:hover {
+                    background-color: #004999;
+                }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Welcome to Our Paging System</h1>
+        <p>Efficient, reliable, and easy to use.</p>
+    </header>
+
+    <section class="welcome-section">
+        <h2>Manage Your Communication with Ease</h2>
+        <p>
+            Our paging system offers seamless and efficient communication across different platforms.
+            Whether you're managing alerts, notifications, or scheduling tasks, our solution is built to deliver the best experience possible.
+        </p>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>Real-time Alerts</h3>
+                <p>Get instant notifications and keep track of important updates with our real-time alert system.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Easy Scheduling</h3>
+                <p>Manage all your tasks with a built-in scheduling tool that ensures you never miss a notification.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Multi-Platform Support</h3>
+                <p>Our system works across different devices, ensuring you stay connected wherever you are.</p>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 
+    <section class="cta-section">
+        <a href="/signup">Get Started Today</a>
+    </section>
 
+    <footer class="footer">
+        <p>&copy; 2024 Paging System | Designed to keep you connected</p>
+    </footer>
+</body>
+</html>

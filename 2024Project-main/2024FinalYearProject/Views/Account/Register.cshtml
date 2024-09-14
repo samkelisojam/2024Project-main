@@ -3,83 +3,103 @@
     ViewBag.Title = "Register";
 }
 
-<div class="d-flex justify-content-center align-items-center mt-5" style="min-height: 70vh;">
-    <div class="">
+<div class="d-flex justify-content-center align-items-center mt-5" style="min-height: 70vh; background-color: #f5f5f5;">
+    <div class="container p-4" style="background-color: #ffffff; border-radius: 10px;">
         <div>
-            <div class="ps-2 pe-2">
-                <h2 class="display-6 text-dark text-center ps-4 pe-4">
-                    Hello, create an account
-                </h2>
-            </div>
+            <h2 class="display-6 text-dark text-center">
+                Hello, create an account
+            </h2>
         </div>
 
         <div class="text-danger mt-3" asp-validation-summary="All"></div>
 
-        <div class="ps-2">
-            <div class="btn-group">
+        <form asp-action="Register" asp-controller="Account" method="post">
+            <input type="hidden" asp-for="RegisterAs" />
 
-                <a asp-controller="Account" asp-action="Register" asp-route-registerAs="student" class="btn btn-info
-                  @(Model.RegisterAs == "student" ? "active" : "")">Student</a>
-
-                <a asp-controller="Account" asp-action="Register" asp-route-registerAs="staff" class="btn btn-info
-                  @(Model.RegisterAs == "staff" ? "active" : "")">Staff</a>
-
-            </div>
-        </div>
-
-        <div class="m-2">
-            <form asp-action="Register" asp-controller="Account" method="post">
-                <input type="hidden" asp-for="RegisterAs" />
-
-                <div class="form-group mb-3">
-                    <div class="d-flex justify-content-between">
-                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="EmailAddress"></label>
-                        <small class="text-muted">Email address must be unique</small>
+            <!-- First row: First Name, Last Name, Email Address -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="FirstName"></label>
+                        <input class="form-control" asp-for="FirstName" autocomplete="off" />
                     </div>
-                    <input class="form-control" asp-for="EmailAddress" autocomplete="off" />
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="LastName"></label>
+                        <input class="form-control" asp-for="LastName" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="EmailAddress"></label>
+                        <input class="form-control" asp-for="EmailAddress" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="IdPassportNumber"></label>
-                    <input class="form-control" asp-for="IdPassportNumber" autocomplete="off" />
+            <!-- Second row: Id/Passport Number, Student/Staff Number -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="IdPassportNumber"></label>
+                        <input class="form-control" asp-for="IdPassportNumber" autocomplete="off" />
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="StudentStaffNumber"></label>
+                        <input class="form-control" asp-for="StudentStaffNumber" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="StudentStaffNumber"></label>
-                    <input class="form-control" asp-for="StudentStaffNumber" autocomplete="off" />
+            <!-- Third row: Password, Confirm Password -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="Password"></label>
+                        <input class="form-control" asp-for="Password" type="password" autocomplete="off" />
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="ConfirmPassword"></label>
+                        <input class="form-control" asp-for="ConfirmPassword" type="password" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="FirstName"></label>
-                    <input class="form-control" asp-for="FirstName" autocomplete="off" />
+            <!-- Radio buttons for Student/Staff selection with icons -->
+            <div class="row mb-3">
+                <div class="col-md-6 text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="RegisterAs" value="student" id="studentOption"/>
+                        <label class="form-check-label" for="studentOption">
+                            <i class="fas fa-user-graduate"></i> Student
+                        </label>
+                    </div>
                 </div>
+                <div class="col-md-6 text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="RegisterAs" value="staff" />
+                        <label class="form-check-label" for="staffOption">
+                            <i class="fas fa-user-tie"></i> Staff
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="LastName"></label>
-                    <input class="form-control" asp-for="LastName" autocomplete="off" />
-                </div>
-
-                <div class="form-group mt-5 mb-2">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="Password"></label>
-                    <input class="form-control" asp-for="Password" autocomplete="off" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="text-uppercase fw-semibold text-dark-emphasis" asp-for="ConfirmPassword"></label>
-                    <input class="form-control" asp-for="ConfirmPassword" autocomplete="off" />
-                </div>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-info shadow-sm">
-                        Create account
-                    </button>
-                    <br /><br />
-                    Already have an account?
-                    <a asp-action="Login" asp-controller="Account">
-                        Login
-                    </a>
-                </div>
-
-            </form>
-        </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-info shadow-sm">
+                    Create account
+                </button>
+                <br /><br />
+                Already have an account?
+                <a asp-action="Login" asp-controller="Account">
+                    Login
+                </a>
+            </div>
+        </form>
     </div>
 </div>
