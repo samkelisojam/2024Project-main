@@ -9,7 +9,7 @@
                     <h6>Email: @Model.UserEmail</h6>
                 </div>
                 <div class="card-body">
-                    <form asp-action="DepositWithdraw" asp-controller="Consultant" method="post">
+                    <form asp-action="DepositWithdraw" asp-controller="Admin" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <input asp-for="UserEmail" class="form-control" hidden />

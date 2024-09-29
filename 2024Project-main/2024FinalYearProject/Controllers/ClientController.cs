@@ -254,6 +254,17 @@ namespace _2024FinalYearProject.Controllers
 
             await _repo.Notification.AddAsync(senderNotification);
             await _repo.Notification.AddAsync(receiverNotification);
+            var username = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            var transaction = new Transaction
+                            {
+                                BankAccountIdSender = int.Parse(senderAccountNumber),
+                                BankAccountIdReceiver = int.Parse(receiverAccountNumber),
+                                Amount = amount,
+                                TransactionDate = DateTime.Now,
+                                UserEmail = user.Email,
+                                Reference = "CashSent",
+                            };
             return true;
         }
 

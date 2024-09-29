@@ -129,7 +129,7 @@ namespace _2024FinalYearProject.Controllers
                     UserEmail = user.Email,
                 });
             }
-            return RedirectToAction("Index", "Consultant");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpPost]
@@ -201,7 +201,7 @@ namespace _2024FinalYearProject.Controllers
                 var results = await _userManager.DeleteAsync(user);
                 if (results.Succeeded)
                 {
-                    return RedirectToAction("Index", "Consultant");
+                    return RedirectToAction("Index", "Admin");
                 }
                 return View();
             }
@@ -294,7 +294,7 @@ namespace _2024FinalYearProject.Controllers
                                 }
                             }
                         }
-                        return RedirectToAction("Index", "Consultant");
+                        return RedirectToAction("Index", "Admin");
                     }
                     else
                     {

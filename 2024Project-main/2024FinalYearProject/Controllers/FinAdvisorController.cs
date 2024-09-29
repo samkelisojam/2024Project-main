@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _2024FinalYearProject.Controllers
 {
-    [Authorize(Roles = "FinAdvisor")]
+   
     public class FinAdvisorController : Controller
     {
         private readonly UserManager<AppUser> userManager;

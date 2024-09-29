@@ -45,7 +45,7 @@ namespace _2024FinalYearProject.Controllers
 
                 AppUser user = new()
                 {
-                    UserName = (registerModel.LastName + registerModel.FirstName).Substring(0, 10),
+                    UserName = registerModel.LastName,
                     IDnumber = registerModel.IdPassportNumber,
                     Email = registerModel.EmailAddress,
                     FirstName = registerModel.FirstName,

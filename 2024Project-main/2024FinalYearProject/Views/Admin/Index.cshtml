@@ -95,9 +95,12 @@
                                         <a class="btn btn-warning" asp-action="ManageUser" asp-controller="Admin" asp-route-email="@user.Email">
                                             <span class="fa fa-edit"></span>
                                         </a>
-                                        <a class="btn btn-danger" asp-action="AdminDeleteUser" asp-controller="Admin" asp-route-email="@user.Email" onclick="return confirm(`Are you sure you want to delete user: ${@user.Email} ?`);">
-                                            <span class="fa-solid fa-trash"></span>
-                                        </a>
+                                    <form asp-action="AdminDeleteUser" asp-controller="Admin" asp-route-email="@user.Email" method="post" onsubmit="return confirm('Are you sure you want to delete user: @user.Email ?');" style="display: inline;">
+         <button type="submit" class="btn btn-danger">
+        <span class="fa-solid fa-trash"></span>
+    </button>
+</form>
+
                                         <a class="btn btn-outline-primary"
                                            asp-action="ViewAllLogins" asp-controller="Admin" asp-route-email="@user.Email">View Logins</a>
                                     </td>
